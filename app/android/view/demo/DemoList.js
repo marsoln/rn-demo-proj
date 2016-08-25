@@ -1,5 +1,4 @@
-import React from 'react'
-import { AppRegistry,
+import React, {
     View,
     BackAndroid,
     Navigator,
@@ -7,9 +6,9 @@ import { AppRegistry,
     ListView,
     ToastAndroid,
     ScrollView,
-    TouchableOpacity } from 'react-native'
-import api from '../../network/API'
-// import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view'
+    TouchableOpacity
+} from '../../../libs/system/react'
+import apis from '../../../libs/network/apis'
 import styles from '../styles/demoList'
 import basicStyle from '../styles/basic'
 
@@ -32,14 +31,14 @@ export default class DemoList extends React.Component {
 
     renderItem(item) {
         return (
-            <Text key={item.id} style={[styles.listItem,basicStyle.panel]}>
+            <Text key={item.id} style={[styles.listItem, basicStyle.panel]}>
                 大家好, 我是{item.name}, 我今年{item.age}岁.
             </Text>
         )
     }
 
     fetchData() {
-        return api.Test
+        return apis.Test
             .getTestData()
             .then((_data) => {
                 this.setState({
@@ -58,17 +57,6 @@ export default class DemoList extends React.Component {
     }
 
     render() {
-        // <ScrollView style={{height:400}}>
-        //             {
-        //                 this.state.data && this.state.data.map((item) => {
-        //                     return (
-        //                         <Text key={item.id} style={styles.listItem}>
-        //                             大家好, 我是{item.name}, 我今年{item.age}岁.
-        //                         </Text>
-        //                     )
-        //                 })
-        //             }
-        //         </ScrollView>
         return (
             <View>
                 <ListView

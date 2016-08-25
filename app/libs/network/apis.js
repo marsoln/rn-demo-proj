@@ -2,17 +2,16 @@
 
 import {
     setErrConsumeFunction
-} from './utils/Http'
+} from './utils/http'
 
 import {
     getTestData,
     postTestData
-} from './TestApis'
+} from './bu/users'
 
 export default {
-    Test: {
-        getTestData,
-        postTestData
+    Users: {
+        list
     },
     Util: {
         setErrConsumeFunction
