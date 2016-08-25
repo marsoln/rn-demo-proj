@@ -1,21 +1,21 @@
 /**
  * 维持当前用户的信息状态
  */
-let currentLoginUser = null;
+let currentLoginUser = null
 
 /**
  * 获取当前登录用户信息
  * @returns {*}
  */
 export function getCurrentUser() {
-  return currentLoginUser;
+  return currentLoginUser
 }
 
 /**
  * 注销当前用户
  */
 export function clearCurrentUser() {
-  currentLoginUser = null;
+  currentLoginUser = null
 }
 
 /**
@@ -23,8 +23,8 @@ export function clearCurrentUser() {
  * @param user 用户信息
  */
 export function setCurrentUser(user) {
-  currentLoginUser = user;
-  Object.freeze(currentLoginUser);
+  currentLoginUser = user
+  Object.freeze(currentLoginUser)
 }
 
 /**
@@ -32,5 +32,5 @@ export function setCurrentUser(user) {
  * @returns {*}
  */
 export function getCurrentUserId() {
-  return currentLoginUser && currentLoginUser['id'];
+  return currentLoginUser && currentLoginUser['id']
 }

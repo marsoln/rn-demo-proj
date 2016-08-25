@@ -2,12 +2,14 @@
 
 import React from 'react'
 import { AppRegistry, View, BackAndroid, Navigator, Text, Alert, ToastAndroid, AppState } from 'react-native'
-import api from './network/API.js'
+import apis from '../libs/network/apis.js'
 import MainTabView from './view/common/MainTabView'
+
+const EXIT_DELAY = 3000    // 双击退出客户端的相应延迟
 
 var _navigator, _quitStatus = false;
 
-api.Util.setErrConsumeFunction(err => {
+apis.Util.setErrConsumeFunction(err => {
     if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
             //网络问题 连接不到服务器
@@ -52,7 +54,7 @@ BackAndroid.addEventListener('hardwareBackPress', () => {
             _quitStatus = true
             setTimeout(() => {
                 _quitStatus = false
-            }, 2999)
+            }, EXIT_DELAY)
             return true
         }
     }

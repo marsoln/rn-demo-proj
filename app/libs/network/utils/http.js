@@ -1,7 +1,7 @@
 'use strict';
 
-const SERVER = 'http://172.26.9.130:8088';
-const MOBILE_API = `${SERVER}/Test`;
+const SERVER = 'http://172.26.9.130:80';
+const MOBILE_API = `${SERVER}/graphql`;
 
 /**
  * 构建表单数据对象
@@ -140,8 +140,37 @@ export function postFormData(action, formParams) {
             'Content-Type': 'multipart/form-data'
         },
         body: _formData
-    }).then(res => res.json()).catch(err => {
-        tryConsumeErr("系统错误:" + err);
-        return err;
-    });
+    })
+        .then(res => res.json())
+        .catch(err => {
+            tryConsumeErr("系统错误:" + err)
+            return err
+        })
+}
+
+/**
+ * graphql 查询
+ * @param {string} query 查询语句
+ * @param {object} varibles 变量
+ * @param {string} operationName 操作类型名称
+ */
+export function graphql(query, varibles, operationName) {
+    return fetch(`${MOBILE_API}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            query: query,
+            varibles: varibles || null,
+            operationName: operationName || null
+        }
+    })
+        .then(res => res.json())
+        .catch(err => {
+            tryConsumeErr("系统错误:" + err)
+            return err
+        })
+
 }

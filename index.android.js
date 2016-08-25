@@ -9,5 +9,5 @@ var {
     AppRegistry,
 } = React;
 
-var Routers = require('./app/Routers.android');
+var Routers = require('./app/android/Routers.android');
 AppRegistry.registerComponent('demoProject', () => Routers);
