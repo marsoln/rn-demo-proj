@@ -1,7 +1,6 @@
-'use strict';
-
-const SERVER = 'http://172.26.9.130:80';
-const MOBILE_API = `${SERVER}/graphql`;
+const SERVER = 'http://172.26.9.135:80'
+const MOBILE_API = `${SERVER}`
+const GRAPHQL_API = `${SERVER}/graphql`
 
 /**
  * 构建表单数据对象
@@ -148,6 +147,17 @@ export function postFormData(action, formParams) {
         })
 }
 
+let formatQuery = function (baseUrl, query, varibles, operationName) {
+    let queryStr = `${baseUrl}?query=${query || '{}'}`
+    if (varibles) {
+        queryStr += `&varibles=${varibles}`
+    }
+    if (operationName) {
+        queryStr += `&operationName=${operationName}`
+    }
+    return queryStr
+}
+
 /**
  * graphql 查询
  * @param {string} query 查询语句
@@ -155,22 +165,24 @@ export function postFormData(action, formParams) {
  * @param {string} operationName 操作类型名称
  */
 export function graphql(query, varibles, operationName) {
-    return fetch(`${MOBILE_API}`, {
-        method: 'POST',
+    let url = formatQuery(GRAPHQL_API, query, varibles, operationName)
+    return fetch(url, {
+        method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
-        body: {
-            query: query,
-            varibles: varibles || null,
-            operationName: operationName || null
         }
     })
         .then(res => res.json())
+        .then(res => {
+            if (res.err) {
+                throw new Error(res.err)
+            } else {
+                return res['data']
+            }
+        })
         .catch(err => {
             tryConsumeErr("系统错误:" + err)
             return err
         })
-
 }

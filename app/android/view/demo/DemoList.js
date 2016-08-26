@@ -32,27 +32,23 @@ export default class DemoList extends React.Component {
     renderItem(item) {
         return (
             <Text key={item.id} style={[styles.listItem, basicStyle.panel]}>
-                大家好, 我是{item.name}, 我今年{item.age}岁.
+                {item.id}: {item.username} 
             </Text>
         )
     }
 
     fetchData() {
-        return apis.Test
-            .getTestData()
+        return apis
+            .UserApi
+            .userList()
             .then((_data) => {
-                this.setState({
-                    data: _data,
-                    dataList: this.state.dataList.cloneWithRows(_data)
-                })
-            })
-    }
-
-    clickBtn() {
-        this
-            .fetchData()
-            .then(() => {
-                ToastAndroid.show('数据更新完毕!', ToastAndroid.SHORT)
+                if (!_data.err) {
+                    this.setState({
+                        data: _data,
+                        dataList: this.state.dataList.cloneWithRows(_data['userList'])
+                    })
+                    ToastAndroid.show('数据更新完毕!', ToastAndroid.SHORT)
+                }
             })
     }
 
@@ -65,7 +61,7 @@ export default class DemoList extends React.Component {
                     dataSource={this.state.dataList}
                     renderRow={this.renderItem.bind(this) }
                     />
-                <TouchableOpacity style={basicStyle.btnContainer} onPress={this.clickBtn.bind(this) }>
+                <TouchableOpacity style={basicStyle.btnContainer} onPress={this.fetchData.bind(this) }>
                     <Text style={basicStyle.button}>从服务器加载数据!!</Text>
                 </TouchableOpacity>
             </View>

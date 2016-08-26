@@ -4,15 +4,12 @@ import {
     setErrConsumeFunction
 } from './utils/http'
 
-import {
-    getTestData,
-    postTestData
-} from './bu/users'
+import UserApi from './bu/users'
+import UserState from './bu/userState'
 
 export default {
-    Users: {
-        list
-    },
+    UserApi,
+    UserState,
     Util: {
         setErrConsumeFunction
     }
