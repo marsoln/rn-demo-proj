@@ -2,19 +2,19 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     list: {
         height: 400,
-        marginTop: 55,
     },
     listItem: {
         flexDirection: 'row',
-        padding: 12,
-        marginBottom: 2,
+        padding: 5,
+        paddingLeft: 12,
+        marginBottom: 1,
         flex: 1,
     },
     light: {
-        backgroundColor: '#eaf3f5',
+        backgroundColor: '#f8faf1',
     },
     dark: {
-        backgroundColor: '#b8daf1',
+        backgroundColor: '#dedede',
     },
     avatar: {
         width: 45,

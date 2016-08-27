@@ -5,6 +5,7 @@ import React, {
     Text,
     Animated,
     NetInfo,
+    StatusBar,
 } from '../../../libs/system/react'
 
 import apis from '../../../libs/network/apis'
@@ -33,7 +34,6 @@ export default class Loading extends React.Component {
     }
 
     componentDidMount() {
-
         NetInfo
             .fetch()
             .done((reach) => {
@@ -79,17 +79,20 @@ export default class Loading extends React.Component {
     }
 
     render() {
-        return (<View>
-            <Animated.Image
-                resizeMode="cover"
-                source={ require('../../../assets/images/loading.jpg') }
-                style={{
-                    flex: 1,
-                    opacity: this.state.fadeAnim,
-                    width: WINDOW_WIDTH,
-                    height: WINDOW_HEIGHT,
-                }}
-                />
-        </View>)
+        return (
+            <View>
+                <StatusBar hidden ={true} />
+                <Animated.Image
+                    resizeMode="cover"
+                    source={ require('../../../assets/images/loading.jpg') }
+                    style={{
+                        flex: 1,
+                        opacity: this.state.fadeAnim,
+                        width: WINDOW_WIDTH,
+                        height: WINDOW_HEIGHT,
+                    }}
+                    />
+            </View>
+        )
     }
 }
