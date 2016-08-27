@@ -34,7 +34,6 @@ export default class Setting extends React.Component {
         return (
             <View>
                 <View style={basicStyles.window}>
-                    <Text style={{ height: 300, backgroundColor: '#aaccee',justifyContent:'center' }}>Settings</Text>
                 </View>
                 <TouchableOpacity style={[basicStyles.btnContainer, basicStyles.btnDanger, styles.logoutBtn]} onPress={this.logout.bind(this) }>
                     <Text style={basicStyles.button}>登出</Text>

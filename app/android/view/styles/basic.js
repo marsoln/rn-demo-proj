@@ -20,7 +20,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height
 const DEFAULT = StyleSheet.create({
     window: {
         height: WINDOW_HEIGHT,
-        backgroundColor: LIGHT_GRAY
+        backgroundColor: LIGHT
     },
     panel: {
         backgroundColor: LIGHT,
@@ -39,10 +39,19 @@ const DEFAULT = StyleSheet.create({
         padding: 8,
         marginLeft: 52,
         marginRight: 52,
-        backgroundColor: LIGHT_GRAY,
+    },
+    button: {
+        color: LIGHT
+    },
+    buttonDark: {
+        color: DARK
+    },
+    btnLarger: {
+        fontSize: 18
     },
     btnDanger: {
-        backgroundColor: LIGHT_RED
+        borderColor: DARK_RED,
+        backgroundColor: LIGHT_RED,
     },
     lineInput: {
         textAlign: 'left',
@@ -62,13 +71,6 @@ const DEFAULT = StyleSheet.create({
     },
     right: {
         justifyContent: 'flex-end',
-    },
-    button: {
-        fontSize: 18,
-        color: LIGHT
-    },
-    buttonDark: {
-        color: DARK
     },
     bgDark: {
         backgroundColor: DARK
@@ -100,8 +102,6 @@ DARK_RED,
 DARK_GREEN,
 DARK_GRAY,
 DARK_BORDER,
-
-
 WINDOW_HEIGHT,
 WINDOW_WIDTH,
 }

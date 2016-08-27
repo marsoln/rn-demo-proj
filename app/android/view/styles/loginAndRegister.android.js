@@ -1,4 +1,7 @@
 import { StyleSheet } from 'react-native'
+import {
+    LIGHT_GREEN
+} from './basic'
 export default StyleSheet.create({
     header: {
         fontSize: 26,
@@ -9,6 +12,7 @@ export default StyleSheet.create({
         textAlign: 'right'
     },
     submit: {
-        marginTop: 84
+        marginTop: 84,
+        backgroundColor: LIGHT_GREEN,
     }
 })

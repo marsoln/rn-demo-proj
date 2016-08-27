@@ -16,7 +16,7 @@ import TabNavigator from 'react-native-tab-navigator'
 import Main from '../index/Main'
 import Chatroom from '../index/Chatroom'
 import Setting from '../index/Setting'
-import FadeInContainer from '../common/FadeInContainer'
+import FadeInContainer from '../components/FadeInContainer'
 
 export default class MainTabView extends React.Component {
   constructor(props) {

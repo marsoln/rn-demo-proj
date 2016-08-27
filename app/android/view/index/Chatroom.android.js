@@ -48,6 +48,8 @@ export default class Chatroom extends React.Component {
     render() {
         return (
             <View>
+                <View style={basicStyles.window}>
+                </View>
                 <ListView
                     ref="list"
                     style={styles.list}

@@ -11,6 +11,8 @@ const DEFAULT_HEADERS = {
     'os': Platform.OS
 }
 
+exports.SERVER = SERVER
+
 /**
  * 构建表单数据对象
  * @param params 表单参数

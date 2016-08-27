@@ -9,7 +9,7 @@ import React, {
 import apis from '../../../libs/network/apis'
 import styles from '../styles/loginAndRegister'
 import basicStyles, {LIGHT_GREEN} from '../styles/basic'
-import FadeInContainer from '../common/FadeInContainer'
+import FadeInContainer from '../components/FadeInContainer'
 
 export default class Register extends React.Component {
 
@@ -50,9 +50,7 @@ export default class Register extends React.Component {
                             onPress={this.gotoLogin.bind(this) }>已经有账号</Text>
                     </View>
                     <View>
-                        <TouchableOpacity style={[basicStyles.btnContainer, {
-                            backgroundColor: LIGHT_GREEN,
-                        }, styles.submit]}>
+                        <TouchableOpacity style={[basicStyles.btnContainer, styles.submit]}>
                             <Text style={basicStyles.button}>注册</Text>
                         </TouchableOpacity>
                     </View>

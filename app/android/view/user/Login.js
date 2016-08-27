@@ -8,8 +8,8 @@ import React, {
 
 import apis from '../../../libs/network/apis'
 import styles from '../styles/loginAndRegister'
-import basicStyles, {LIGHT_BLUE, LIGHT, DARK_BLUE} from '../styles/basic'
-import FadeInContainer from '../common/FadeInContainer'
+import basicStyles from '../styles/basic'
+import FadeInContainer from '../components/FadeInContainer'
 import Toast from  'react-native-toast'
 
 export default class Login extends React.Component {
@@ -17,8 +17,8 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
-            password: '',
+            username: 'bobo',
+            password: '123',
             unsubmit: true  // 是否未提交
         }
     }
@@ -70,10 +70,12 @@ export default class Login extends React.Component {
                         <TextInput
                             style={basicStyles.lineInput}
                             placeholder="用户名"
+                            value="bobo"
                             onChangeText={(text) => this.setState({ username: text }) }/>
                         <TextInput
                             style={basicStyles.lineInput}
                             placeholder="密码"
+                            value="123"
                             secureTextEntry={true}
                             onChangeText={(text) => this.setState({ password: text }) } />
                     </View>
@@ -83,10 +85,7 @@ export default class Login extends React.Component {
                     </View>
                     <View>
                         <TouchableOpacity
-                            style={[basicStyles.btnContainer, {
-                                backgroundColor: DARK_BLUE,
-                                borderColor: LIGHT_BLUE
-                            }, styles.submit]}
+                            style={[basicStyles.btnContainer, styles.submit]}
                             onPress={this.loginSubmit.bind(this) }>
                             <Text style={basicStyles.button}>登录</Text>
                         </TouchableOpacity>

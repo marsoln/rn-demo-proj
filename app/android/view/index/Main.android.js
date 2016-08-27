@@ -30,7 +30,7 @@ export default class Main extends React.Component {
     }
 
     renderItem(item, section, index) {
-        let uri = `http://192.168.1.3/${item.avatar}`
+        let uri = !~item.avatar.indexOf('http:') ? `${apis.SERVER}/${item.avatar}` : item.avatar
         return (
             <View style={[styles.listItem, index % 2 == 0 ? styles.light : styles.dark]}>
                 <Image style={styles.avatar}
@@ -59,13 +59,14 @@ export default class Main extends React.Component {
     render() {
         return (
             <View>
-                <ListView
-                    ref="list"
-                    style={styles.list}
-                    dataSource={this.state.dataList}
-                    renderRow={this.renderItem.bind(this) }
-                    />
-                <TouchableOpacity style={basicStyles.btnContainer} onPress={this.fetchData.bind(this) }>
+                <View style={basicStyles.window}>
+                    <ListView
+                        ref="list"
+                        style={styles.list}
+                        dataSource={this.state.dataList}
+                        renderRow={this.renderItem.bind(this) } />
+                </View>
+                <TouchableOpacity style={[basicStyles.btnContainer, { bottom: 120 }]} onPress={this.fetchData.bind(this) }>
                     <Text style={basicStyles.buttonDark}>从服务器加载数据!!</Text>
                 </TouchableOpacity>
             </View>
