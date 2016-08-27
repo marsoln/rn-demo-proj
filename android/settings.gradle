@@ -2,4 +2,6 @@ rootProject.name = 'demoProject'
 
 include ':app'
 include ':react-native-vector-icons'
+include ':react-native-toast'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+project(':react-native-toast').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-toast/android')

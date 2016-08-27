@@ -1,6 +1,15 @@
-const SERVER = 'http://172.26.9.135:80'
+// const SERVER = 'http://172.26.9.135:80'
+import { Platform } from 'react-native'
+import STATES from './states'
+
+const SERVER = 'http://192.168.1.3'
 const MOBILE_API = `${SERVER}`
 const GRAPHQL_API = `${SERVER}/graphql`
+const DEFAULT_HEADERS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'os': Platform.OS
+}
 
 /**
  * 构建表单数据对象
@@ -8,7 +17,7 @@ const GRAPHQL_API = `${SERVER}/graphql`
  * @returns {*} 构建后的FormData对象
  */
 var createFormData = function (params) {
-    var data = new FormData();
+    var data = new FormData()
     //我们需要将FormData里的数组和特殊对象扁平处理
     var flattenFormData = function (args, formDataObj) {
         for (let key in args) {
@@ -16,7 +25,7 @@ var createFormData = function (params) {
             if (args.hasOwnProperty(key) && args[key] !== null && args[key] !== undefined) {
                 //图片特殊处理
                 if (key.toLowerCase() === 'files' && null != args[key] && args[key] !== undefined) {
-                    var files = args[key];
+                    var files = args[key]
                     for (let i = 0; i < files.length; i++) {
                         formDataObj.append('Files', {
                             uri: files[i]['uri'],
@@ -31,7 +40,7 @@ var createFormData = function (params) {
                  需要FormData append的value必须是基本对象
                  */
                 else if (Array.isArray(args[key])) {
-                    var arr = args[key];
+                    var arr = args[key]
                     for (let i = 0; i < arr.length; i++) {
                         if (null != arr[i] && arr[i] !== undefined) {
                             flattenFormData({
@@ -50,11 +59,11 @@ var createFormData = function (params) {
                 }
             }
         }
-    };
-    flattenFormData(params, data);
+    }
+    flattenFormData(params, data)
     return data
-};
-var errConsumer, errQueue = [];
+}
+var errConsumer, errQueue = []
 
 /**
  * 尝试消费错误,如果没有指定消费函数,则加入队列
@@ -63,22 +72,22 @@ var errConsumer, errQueue = [];
 var tryConsumeErr = function (err) {
     if (!!errConsumer && typeof errConsumer === 'function') {
         if (err) {
-            errConsumer(err);
+            errConsumer(err)
         } else if (errQueue.length > 0) {
-            errQueue.map(errConsumer);
+            errQueue.map(errConsumer)
         }
     } else {
-        errQueue[errQueue.length] = err;
+        errQueue[errQueue.length] = err
     }
-};
+}
 
 /**
  * 设置错误队列消费函数,唯一
  * @param consumeFunc
  */
 export function setErrConsumeFunction(consumeFunc) {
-    errConsumer = consumeFunc;
-    tryConsumeErr();
+    errConsumer = consumeFunc
+    tryConsumeErr()
 }
 
 /**
@@ -89,14 +98,12 @@ export function setErrConsumeFunction(consumeFunc) {
 export function getData(action) {
     return fetch(`${MOBILE_API}/${action}`, {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    }).then((res) => res.json()).catch(err => {
-        tryConsumeErr(err);
-        return err;
-    });
+        headers: DEFAULT_HEADERS
+    })
+        .then((res) => res.json())
+        .catch(err => {
+            tryConsumeErr(err)
+        })
 }
 
 /**
@@ -114,15 +121,13 @@ export function postData(action, params) {
     }
     return fetch(`${MOBILE_API}/${action}`, {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        headers: DEFAULT_HEADERS,
         body: JSON.stringify(params)
-    }).then((res) => res.json()).catch(err => {
-        tryConsumeErr("系统错误:" + err);
-        return err;
-    });
+    })
+        .then((res) => res.json())
+        .catch(err => {
+            tryConsumeErr(err)
+        })
 }
 
 /**
@@ -131,19 +136,17 @@ export function postData(action, params) {
  * @param formParams 表单参数
  */
 export function postFormData(action, formParams) {
-    var _formData = createFormData(formParams);
+    var _formData = createFormData(formParams)
     return fetch(`${MOBILE_API}/${action}`, {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
+        headers: Object.assign({}, DEFAULT_HEADERS, {
             'Content-Type': 'multipart/form-data'
-        },
+        }),
         body: _formData
     })
         .then(res => res.json())
         .catch(err => {
-            tryConsumeErr("系统错误:" + err)
-            return err
+            tryConsumeErr(err)
         })
 }
 
@@ -168,21 +171,17 @@ export function graphql(query, varibles, operationName) {
     let url = formatQuery(GRAPHQL_API, query, varibles, operationName)
     return fetch(url, {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        headers: DEFAULT_HEADERS
     })
         .then(res => res.json())
         .then(res => {
-            if (res.err) {
-                throw new Error(res.err)
+            if (res.type == STATES.UNAUTHENTICATED || res.type == STATES.INTERNAL_ERR) {
+                throw new Error(res['data'])
             } else {
                 return res['data']
             }
         })
         .catch(err => {
-            tryConsumeErr("系统错误:" + err)
-            return err
+            tryConsumeErr(err)
         })
 }
