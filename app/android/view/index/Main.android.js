@@ -4,21 +4,21 @@ import React, {
     Navigator,
     Text,
     ListView,
+    Image,
     ToastAndroid,
     ScrollView,
     TouchableOpacity
 } from '../../../libs/system/react'
 import apis from '../../../libs/network/apis'
-import styles from '../styles/demoList'
-import basicStyle from '../styles/basic'
+import styles from '../styles/main'
+import basicStyles from '../styles/basic'
 
-export default class DemoList extends React.Component {
+export default class Main extends React.Component {
 
     constructor(props) {
         super(props)
         const nav = this.props.nav
         this.state = {
-            data: null,
             dataList: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
             })
@@ -29,11 +29,16 @@ export default class DemoList extends React.Component {
         this.fetchData()
     }
 
-    renderItem(item) {
+    renderItem(item, section, index) {
+        let uri = `http://192.168.1.3/${item.avatar}`
         return (
-            <Text key={item.id} style={[styles.listItem, basicStyle.panel]}>
-                {item.id}: {item.username} 
-            </Text>
+            <View style={[styles.listItem, index % 2 == 0 ? styles.light : styles.dark]}>
+                <Image style={styles.avatar}
+                    source={{ uri: uri }}/>
+                <Text key={item.id} style={styles.username}>
+                    {item.username}
+                </Text>
+            </View>
         )
     }
 
@@ -42,13 +47,12 @@ export default class DemoList extends React.Component {
             .UserApi
             .userList()
             .then((_data) => {
-                if (!_data.err) {
+                if (_data) {
                     this.setState({
-                        data: _data,
                         dataList: this.state.dataList.cloneWithRows(_data['userList'])
                     })
-                    ToastAndroid.show('数据更新完毕!', ToastAndroid.SHORT)
                 }
+                // ToastAndroid.show('数据更新完毕!', ToastAndroid.SHORT)
             })
     }
 
@@ -61,8 +65,8 @@ export default class DemoList extends React.Component {
                     dataSource={this.state.dataList}
                     renderRow={this.renderItem.bind(this) }
                     />
-                <TouchableOpacity style={basicStyle.btnContainer} onPress={this.fetchData.bind(this) }>
-                    <Text style={basicStyle.button}>从服务器加载数据!!</Text>
+                <TouchableOpacity style={basicStyles.btnContainer} onPress={this.fetchData.bind(this) }>
+                    <Text style={basicStyles.buttonDark}>从服务器加载数据!!</Text>
                 </TouchableOpacity>
             </View>
         )

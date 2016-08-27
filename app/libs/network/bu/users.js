@@ -6,6 +6,7 @@ export default {
         userList {
             id
             username
+            avatar
         }
     }`)
     }
