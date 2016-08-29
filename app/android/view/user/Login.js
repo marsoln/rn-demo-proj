@@ -1,5 +1,4 @@
 import React, {
-    Alert,
     View,
     Text,
     TextInput,
@@ -11,14 +10,26 @@ import styles from '../styles/loginAndRegister'
 import basicStyles from '../styles/basic'
 import FadeInContainer from '../components/FadeInContainer'
 import Toast from  'react-native-toast'
+import DB from 'react-native-store'
 
 export default class Login extends React.Component {
 
     constructor(props) {
         super(props)
+        let account = DB.model('account')
+        let _where = { where: { state: 'last_login_user' } }
+
+        account.find(_where).then(res => {
+            if (res && res[0]) {
+                this.setState({
+                    username: res[0]['username'],
+                    password: res[0]['password'],
+                })
+            }
+        })
+
         this.state = {
-            username: 'bobo',
-            password: '123',
+            username: '',
             unsubmit: true  // 是否未提交
         }
     }
@@ -70,12 +81,11 @@ export default class Login extends React.Component {
                         <TextInput
                             style={basicStyles.lineInput}
                             placeholder="用户名"
-                            value="bobo"
+                            value={this.state.username}
                             onChangeText={(text) => this.setState({ username: text }) }/>
                         <TextInput
                             style={basicStyles.lineInput}
                             placeholder="密码"
-                            value="123"
                             secureTextEntry={true}
                             onChangeText={(text) => this.setState({ password: text }) } />
                     </View>

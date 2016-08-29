@@ -84,7 +84,7 @@ export default class Loading extends React.Component {
                 <StatusBar hidden ={true} />
                 <Animated.Image
                     resizeMode="cover"
-                    source={ require('../../../assets/images/loading.jpg') }
+                    source={ Math.random() > 0.5 ? require('../../../assets/images/loading.jpg') : require('../../../assets/images/loading1.png') }
                     style={{
                         flex: 1,
                         opacity: this.state.fadeAnim,

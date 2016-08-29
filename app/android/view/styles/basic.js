@@ -1,21 +1,12 @@
 import { StyleSheet, Dimensions} from 'react-native'
 
-const LIGHT = '#fefefe'
-const LIGHT_BLUE = '#aaccee'
-const LIGHT_RED = '#E23337'
-const LIGHT_GREEN = '#9AB44C'
-const LIGHT_GRAY = '#eaeaea'
-const LIGHT_BORDER = '#8ea367'
+const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_RED = '#E23337', LIGHT_GREEN = '#9AB44C', LIGHT_GRAY = '#eaeaea', LIGHT_BORDER = '#8ea367'
 
-const DARK = '#3e3e3e'
-const DARK_BLUE = '#282E5E'
-const DARK_RED = '#B63032'
-const DARK_GREEN = '#343428'
-const DARK_GRAY = '#575757'
-const DARK_BORDER = '#3e8299'
+const GRAY = '#989898'
 
-const WINDOW_WIDTH = Dimensions.get('window').width
-const WINDOW_HEIGHT = Dimensions.get('window').height
+const DARK = '#3e3e3e', DARK_BLUE = '#282E5E', DARK_RED = '#B63032', DARK_GREEN = '#343428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
+
+const WINDOW_WIDTH = Dimensions.get('window').width, WINDOW_HEIGHT = Dimensions.get('window').height
 
 const DEFAULT = StyleSheet.create({
     window: {
@@ -96,6 +87,9 @@ LIGHT_RED,
 LIGHT_GREEN,
 LIGHT_GRAY,
 LIGHT_BORDER,
+
+GRAY,
+
 DARK,
 DARK_BLUE,
 DARK_RED,
