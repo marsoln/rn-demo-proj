@@ -46,11 +46,12 @@ const DEFAULT = StyleSheet.create({
     },
     lineInput: {
         textAlign: 'left',
+        backgroundColor: LIGHT,
         fontSize: 16,
         marginLeft: 32,
         marginRight: 32,
         marginTop: 0,
-        marginBottom: 0,
+        marginBottom: 3,
         padding: 8
     },
     link: {

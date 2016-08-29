@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     logoutBtn: {
-        bottom: 120
+        bottom: 130
     }
 })

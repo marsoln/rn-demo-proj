@@ -68,7 +68,7 @@ export default class Main extends React.Component {
                             renderRow={this.renderItem.bind(this) } />
                     </View>
                 </View>
-                <TouchableOpacity style={[basicStyles.btnContainer, { bottom: 120 }]} onPress={this.fetchData.bind(this) }>
+                <TouchableOpacity style={[basicStyles.btnContainer, { bottom: 130 }]} onPress={this.fetchData.bind(this) }>
                     <Text style={basicStyles.buttonDark}>从服务器加载数据!!</Text>
                 </TouchableOpacity>
             </View>

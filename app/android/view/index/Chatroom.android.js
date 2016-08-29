@@ -49,6 +49,7 @@ export default class Chatroom extends React.Component {
                 content: ''
             })
             this.refs.contentInput.blur()
+            this.scrollDown()
         }
     }
 
@@ -62,27 +63,36 @@ export default class Chatroom extends React.Component {
                 break
             case TYPE.HIS:
                 let uri = !~his.user.avatar.indexOf('http:') ? `${apis.SERVER}/${his.user.avatar}` : his.user.avatar
+                let lines = his.text.length / 20 >>> 0
+                let _style = lines > 0 ? {
+                    width: 244,
+                    minHeight: (lines + 1) * 22
+                } : {}
+                let _listStyle = lines > 0 ? {
+                    height: _style.minHeight + 18
+                } : { height: 42 }
+
                 if (his.isMine) {
                     // 我的聊天信息
                     return (
                         <View key={his.id}
-                            style={[styles.listItem, styles.isMine]} >
+                            style={[styles.listItem, styles.isMine, _listStyle]} >
                             <View  style={[styles.msgContent, styles.isMyContent]}>
-                                <Text style={styles.message}>{his.text}</Text>
+                                <Text style={[styles.message, _style]}>{his.text}</Text>
                             </View>
                             <Image source={{ uri: uri }}
-                                style={styles.avatar}></Image>
+                                style={[styles.avatar, styles.isMyAvatar]}></Image>
                         </View>
                     )
                 } else {
                     // 其他人发送的聊天信息
                     return (
                         <View key={his.id}
-                            style={styles.listItem} >
+                            style={[styles.listItem, _listStyle]} >
                             <Image source={{ uri: uri }}
                                 style={styles.avatar}></Image>
-                            <View  style={[styles.msgContent, styles.isMine]}>
-                                <Text style={styles.message}>{his.text}</Text>
+                            <View  style={[styles.msgContent]}>
+                                <Text style={[styles.message, _style]}>{his.text}</Text>
                             </View>
                         </View>
                     )
@@ -96,6 +106,20 @@ export default class Chatroom extends React.Component {
         this.setState({
             chatInfos: this.state.chatInfos.cloneWithRows(this.chatHis)
         })
+    }
+
+    scrollDown() {
+        setTimeout(() => {
+            this.refs.chatList.scrollTo({
+                y: -1 >>> 1
+            })
+        }, 200)
+    }
+
+    autoScrollDown() {
+        if (this.refs.chatList.scrollHeight) {
+            this.scrollDown()
+        }
     }
 
     connectChatServer() {
@@ -125,6 +149,7 @@ export default class Chatroom extends React.Component {
                 isMine: false,
                 user: _msg.sender
             })
+            this.autoScrollDown()
         })
     }
 
@@ -132,9 +157,11 @@ export default class Chatroom extends React.Component {
         return (
             <View>
                 <View style={basicStyles.window}>
-                    <Text style={styles.title}>---聊天室当前在线 {this.state.chatRoomUserAmount} 人---</Text>
+                    <Text style={styles.title}>当前在线 {this.state.chatRoomUserAmount} 人</Text>
                     <View style={styles.list}>
                         <ListView
+                            ref="chatList"
+                            style={styles.chatList}
                             dataSource={this.state.chatInfos}
                             renderRow={this.renderChatHis.bind(this) }
                             />
@@ -147,7 +174,7 @@ export default class Chatroom extends React.Component {
                             style={styles.content}
                             placeholder="你想说点啥"
                             value={this.state.content}
-                            underlineColorAndroid="#eaeaea"
+                            underlineColorAndroid="transparent"
                             onChangeText={(text) => this.setState({ content: text }) }/>
                     </View>
                     <TouchableOpacity style={styles.sendBtnContainer}
