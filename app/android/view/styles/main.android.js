@@ -1,17 +1,18 @@
 import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     list: {
-        height: 400,
+        height: 300,
     },
     listItem: {
         flexDirection: 'row',
+        alignItems: 'center',
         padding: 5,
         paddingLeft: 12,
         marginBottom: 1,
         flex: 1,
     },
     light: {
-        backgroundColor: '#f8faf1',
+        backgroundColor: '#fafafa',
     },
     dark: {
         backgroundColor: '#dedede',
@@ -25,7 +26,6 @@ export default StyleSheet.create({
     username: {
         flex: 3,
         paddingLeft: 15,
-        marginTop: 12,
         height: 20,
         fontSize: 16,
         fontWeight: 'bold',

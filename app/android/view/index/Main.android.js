@@ -60,11 +60,13 @@ export default class Main extends React.Component {
         return (
             <View>
                 <View style={basicStyles.window}>
-                    <ListView
-                        ref="list"
-                        style={styles.list}
-                        dataSource={this.state.dataList}
-                        renderRow={this.renderItem.bind(this) } />
+                    <View
+                            style={styles.list}>
+                        <ListView
+                            ref="list"
+                            dataSource={this.state.dataList}
+                            renderRow={this.renderItem.bind(this) } />
+                    </View>
                 </View>
                 <TouchableOpacity style={[basicStyles.btnContainer, { bottom: 120 }]} onPress={this.fetchData.bind(this) }>
                     <Text style={basicStyles.buttonDark}>从服务器加载数据!!</Text>
