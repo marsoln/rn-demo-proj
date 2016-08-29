@@ -103,7 +103,7 @@ export default class MainTabView extends React.Component {
   }
 
   render() {
-    return (<FadeInContainer renderContent={ this.renderContent() }></FadeInContainer>)
+    return (<FadeInContainer renderContent={ this.renderContent() } hiddenStatus="false"></FadeInContainer>)
   }
 }
 
