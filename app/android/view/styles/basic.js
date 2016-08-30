@@ -1,10 +1,10 @@
 import { StyleSheet, Dimensions} from 'react-native'
 
-const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_RED = '#E23337', LIGHT_GREEN = '#9AB44C', LIGHT_GRAY = '#eaeaea', LIGHT_BORDER = '#8ea367'
+const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_GOLDEN = '#ECE165', LIGHT_RED = '#E23337', LIGHT_GREEN = '#AAC45C', LIGHT_GRAY = '#efefef', LIGHT_BORDER = '#8ea367'
 
-const GRAY = '#989898'
+const GRAY = '#989898', GOLDEN = '#DED537', RED = '#D65042'
 
-const DARK = '#3e3e3e', DARK_BLUE = '#282E5E', DARK_RED = '#B63032', DARK_GREEN = '#343428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
+const DARK = '#3e3e3e', DARK_BLUE = '#282E5E', DARK_GOLDEN = '#ACA125', DARK_RED = '#B63032', DARK_GREEN = '#346428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
 
 const WINDOW_WIDTH = Dimensions.get('window').width, WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -46,7 +46,7 @@ const DEFAULT = StyleSheet.create({
     },
     lineInput: {
         textAlign: 'left',
-        backgroundColor: LIGHT,
+        backgroundColor: LIGHT_GREEN,
         fontSize: 16,
         marginLeft: 32,
         marginRight: 32,
@@ -84,15 +84,19 @@ export default currentStyle
 export {
 LIGHT,
 LIGHT_BLUE,
+LIGHT_GOLDEN,
 LIGHT_RED,
 LIGHT_GREEN,
 LIGHT_GRAY,
 LIGHT_BORDER,
 
 GRAY,
+GOLDEN,
+RED,
 
 DARK,
 DARK_BLUE,
+DARK_GOLDEN,
 DARK_RED,
 DARK_GREEN,
 DARK_GRAY,

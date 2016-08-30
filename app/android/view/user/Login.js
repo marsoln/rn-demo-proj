@@ -23,7 +23,7 @@ export default class Login extends React.Component {
             if (res && res[0]) {
                 this.setState({
                     username: res[0]['username'],
-                    password: res[0]['password'],
+                    password: res[0]['password']
                 })
             }
         })
@@ -57,7 +57,7 @@ export default class Login extends React.Component {
                 .login(this.state.username, this.state.password)
                 .then((res) => {
                     this.state.unsubmit = true
-                    if (res.type == 1) {
+                    if (res.type == apis.STATES.SUCCESS) {
                         this.props.nav.immediatelyResetRouteStack([
                             {
                                 id: 'MainTabView',
@@ -75,23 +75,26 @@ export default class Login extends React.Component {
     renderContent() {
         return () => {
             return (
-                <View style={basicStyles.container}>
-                    <Text style={styles.header}>登录</Text>
-                    <View>
-                        <TextInput
-                            style={basicStyles.lineInput}
-                            placeholder="用户名"
-                            value={this.state.username}
-                            onChangeText={(text) => this.setState({ username: text }) }/>
-                        <TextInput
-                            style={basicStyles.lineInput}
-                            placeholder="密码"
-                            secureTextEntry={true}
-                            onChangeText={(text) => this.setState({ password: text }) } />
-                    </View>
-                    <View style={[basicStyles.link, basicStyles.right]}>
-                        <Text style={styles.right}
-                            onPress={this.gotoRegister.bind(this) }>还没有注册?</Text>
+                <View>
+                    <View style={[basicStyles.container, styles.container, styles.bgGreen]}>
+                        <Text style={styles.header}>进来坐坐</Text>
+                        <View>
+                            <TextInput
+                                style={basicStyles.lineInput}
+                                placeholder="用户名"
+                                value={this.state.username}
+                                onChangeText={(text) => this.setState({ username: text }) }/>
+                            <TextInput
+                                style={basicStyles.lineInput}
+                                placeholder="密码"
+                                secureTextEntry={true}
+                                defaultValue={this.state.password}
+                                onChangeText={(text) => this.setState({ password: text }) } />
+                        </View>
+                        <View style={[basicStyles.link, basicStyles.right]}>
+                            <Text style={styles.right}
+                                onPress={this.gotoRegister.bind(this) }>还没有注册?</Text>
+                        </View>
                     </View>
                     <View>
                         <TouchableOpacity

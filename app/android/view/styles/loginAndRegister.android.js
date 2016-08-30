@@ -1,18 +1,41 @@
 import { StyleSheet } from 'react-native'
 import {
-    LIGHT_GREEN
+    LIGHT,
+    LIGHT_GRAY,
+    LIGHT_GREEN,
+    LIGHT_GOLDEN,
+    GRAY,
+    DARK_GREEN,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
 } from './basic'
 export default StyleSheet.create({
+    container: {
+        height: WINDOW_HEIGHT,
+    },
+    bgYellow: {
+        backgroundColor: '#eae392'
+    },
+    bgGreen: {
+        backgroundColor: DARK_GREEN
+    },
     header: {
-        fontSize: 26,
+        fontSize: 36,
+        color: LIGHT,
         textAlign: 'center',
-        marginBottom: 80
+        marginBottom: 80,
     },
     right: {
-        textAlign: 'right'
+        textAlign: 'right',
+        color: GRAY,
     },
     submit: {
-        marginTop: 84,
+        position: 'absolute',
+        bottom: 120,
+        left: 24,
+        width: WINDOW_WIDTH - 48,
+        marginLeft: 0,
+        marginRight: 0,
         backgroundColor: LIGHT_GREEN,
     }
 })

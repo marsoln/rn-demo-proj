@@ -7,12 +7,11 @@ import {
   View,
   TouchableNativeFeedback,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabNavigator from 'react-native-tab-navigator'
-
 import Main from '../index/Main'
 import Chatroom from '../index/Chatroom'
 import Setting from '../index/Setting'
@@ -23,8 +22,16 @@ export default class MainTabView extends React.Component {
     super(props);
     const nav = this.props.nav;
     this.state = {
-      selectedTab: this.props.selectedTab != null ? this.props.selectedTab : 'Main'
+      selectedTab: this.props.selectedTab != null ? this.props.selectedTab : 'Main',
+      hiddenStatus: true
     }
+  }
+
+  switchPage(keyword) {
+    this.setState({
+      selectedTab: keyword,
+      // hiddenStatus: keyword == 'Chat'
+    })
   }
 
   renderContent() {
@@ -49,7 +56,7 @@ export default class MainTabView extends React.Component {
                 color='#3b5998'
                 />}
             titleStyle={{ fontSize: 12 }}
-            onPress={() => this.setState({ selectedTab: 'Main' }) }>
+            onPress={() => this.switchPage('Main') }>
             <Main nav={this.props.nav}></Main>
           </TabNavigator.Item>
 
@@ -71,7 +78,7 @@ export default class MainTabView extends React.Component {
                 color='#3b5998'
                 />}
             titleStyle={{ fontSize: 12 }}
-            onPress={() => this.setState({ selectedTab: 'Chat' }) }>
+            onPress={() => this.switchPage('Chat') }>
             <Chatroom nav={this.props.nav}></Chatroom>
           </TabNavigator.Item>
 
@@ -93,7 +100,7 @@ export default class MainTabView extends React.Component {
                 color='#3b5998'
                 />}
             titleStyle={{ fontSize: 12 }}
-            onPress={() => this.setState({ selectedTab: 'Setting' }) }>
+            onPress={() => this.switchPage('Setting') }>
             <Setting nav={this.props.nav}></Setting>
           </TabNavigator.Item>
 
@@ -103,7 +110,9 @@ export default class MainTabView extends React.Component {
   }
 
   render() {
-    return (<FadeInContainer renderContent={ this.renderContent() } hiddenStatus="false"></FadeInContainer>)
+    return (
+      <FadeInContainer renderContent={ this.renderContent() } hidden={this.state.hiddenStatus}/>
+    )
   }
 }
 

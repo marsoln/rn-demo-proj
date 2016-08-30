@@ -23,7 +23,9 @@ export function clearCurrentUser() {
  * @param user 用户信息
  */
 export function setCurrentUser(user) {
+  debugger
   currentLoginUser = user
+  currentLoginUser.name = user.username
   Object.freeze(currentLoginUser)
 }
 

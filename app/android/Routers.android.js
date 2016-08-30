@@ -1,11 +1,12 @@
 import React, {
     AppRegistry,
-    View,
+    AppState,
+    Alert,
     BackAndroid,
     Navigator,
-    Alert,
     Text,
-    AppState,
+    View,
+    StatusBar,
 } from '../libs/system/react'
 import apis from '../libs/network/apis.js'
 import MainTabView from './view/common/MainTabView'
@@ -87,12 +88,12 @@ export default class AndroidRouters extends React.Component {
         _navigator = navigator;
         switch (route.id) {
             case 'MainTabView':
-                return (<View style = { { flex: 1 } }>
+                return (
                     <MainTabView nav = { navigator }
                         type = { route.type }
                         selectedTab = { route.selectedTab }
                         />
-                </View>)
+                )
             case 'Loading':
                 return (<Loading nav={ navigator } />)
             case 'Login':
@@ -103,14 +104,11 @@ export default class AndroidRouters extends React.Component {
     }
 
     render() {
-        return (<Navigator ref = "navigator"
-            initialRoute = {
-                { id: 'Loading' }
-            }
-            configureScene = {
-                () => Navigator.SceneConfigs.FadeAndroid
-            }
-            renderScene = { this.renderScene } />
+        return (
+            <Navigator ref = "navigator"
+                initialRoute = { { id: 'Loading' } }
+                configureScene = { () => Navigator.SceneConfigs.FadeAndroid }
+                renderScene = { this.renderScene } />
         )
     }
 
