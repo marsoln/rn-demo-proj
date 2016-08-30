@@ -83,7 +83,7 @@ export default class Chatroom extends React.Component {
             this.refs.chatList.scrollTo({
                 y: -1 >>> 1
             })
-        }, 300)
+        }, 600)
     }
 
     connectChatServer() {

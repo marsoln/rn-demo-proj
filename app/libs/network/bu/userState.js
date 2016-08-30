@@ -1,5 +1,5 @@
 import { getData, postData, postFormData, graphql } from '../utils/http'
-import { setCurrentUser, clearCurrentUser } from '../utils/currentUser'
+import currentUser from '../utils/currentUser'
 import DB from 'react-native-store'
 import STATES from '../utils/states'
 
@@ -27,7 +27,7 @@ export default {
             .then(res => {
                 if (res.type == STATES.SUCCESS && !!res.data) {
                     //当用户正常登录时 更新currentUser缓存
-                    setCurrentUser(res.data)
+                    currentUser.setCurrentUser(res.data)
                 }
                 return res
             })
@@ -44,10 +44,10 @@ export default {
             password: password
         }).then(res => {
             if (res.type == STATES.SUCCESS) {    // 登录成功
-                setCurrentUser(res.data) // 更新缓存中当前用户对象
+                currentUser.setCurrentUser(res.data) // 更新缓存中当前用户对象
                 updateLastLoginUser(username, password)
             } else {
-                clearCurrentUser() // 清空缓存的当前用户对象
+                currentUser.clearCurrentUser() // 清空缓存的当前用户对象
             }
             return res
         })
@@ -66,10 +66,10 @@ export default {
             confirmpwd
         }).then(res => {
             if (res.type == STATES.SUCCESS) {    // 登录成功
-                setCurrentUser(res.data) // 更新缓存中当前用户对象
+                currentUser.setCurrentUser(res.data) // 更新缓存中当前用户对象
                 updateLastLoginUser(username, password)
             } else {
-                clearCurrentUser() // 清空缓存的当前用户对象
+                currentUser.clearCurrentUser() // 清空缓存的当前用户对象
             }
             return res
         })
@@ -101,7 +101,7 @@ export default {
      * 登出当前用户
      */
     logout() {
-        clearCurrentUser()
+        currentUser.clearCurrentUser()
         return getData(`logout`)
     }
 }

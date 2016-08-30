@@ -74,7 +74,6 @@ export default StyleSheet.create({
     },
     contentContainer: {
         flex: 5,
-        justifyContent: 'center',
     },
     content: {
         padding: 7,
@@ -85,15 +84,15 @@ export default StyleSheet.create({
     sendBtnContainer: {
         flex: 1,
         margin: 0,
+        marginTop: -3,
         height: 32,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,
         borderWidth: 0.5,
         borderColor: LIGHT_BLUE,
-        padding: 6,
         marginRight: 8,
-        backgroundColor: DARK_GRAY,
+        backgroundColor: GRAY,
     },
     sendBtn: {
         color: LIGHT

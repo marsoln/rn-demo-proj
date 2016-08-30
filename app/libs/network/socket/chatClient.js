@@ -1,6 +1,6 @@
 import io from './socket.io'
 import { SERVER } from '../utils/http'
-import { getCurrentUser } from '../utils/currentUser'
+import currentUser from '../utils/currentUser'
 
 const SERVICE_NAME_PREFIX = 'chatroom-'
 const SOCKET = io(SERVER)
@@ -28,7 +28,7 @@ let resetHandler = () => {
 class ChatClient {
 
     constructor() {
-        this.user = Object.assign({}, getCurrentUser())
+        this.user = Object.assign({}, currentUser.getCurrentUser())
     }
 
     open() {
