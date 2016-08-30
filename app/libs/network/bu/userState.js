@@ -3,6 +3,21 @@ import { setCurrentUser, clearCurrentUser } from '../utils/currentUser'
 import DB from 'react-native-store'
 import STATES from '../utils/states'
 
+let updateLastLoginUser = (username, password) => {
+    let account = DB.model('account')
+    let _where = { where: { state: 'last_login_user' } }
+    let _model = { username, password, state: 'last_login_user' }
+    account
+        .find(_where)
+        .then(res => {
+            if (res) {
+                account.update(_model, _where)
+            } else {
+                account.add(_model)
+            }
+        }) // 记录用户名密码
+}
+
 export default {
     /**
      * 检查登录状态
@@ -24,24 +39,13 @@ export default {
      * @param {string} password 密码
      */
     login(username, password) {
-        return postData(`login/`, {
+        return postData(`login`, {
             username: username,
             password: password
         }).then(res => {
-            if (res.type == 1) {    // 登录成功
+            if (res.type == STATES.SUCCESS) {    // 登录成功
                 setCurrentUser(res.data) // 更新缓存中当前用户对象
-                let account = DB.model('account')
-                let _where = { where: { state: 'last_login_user' } }
-                let _model = { username, password, state: 'last_login_user' }
-                account
-                    .find(_where)
-                    .then(res => {
-                        if (res) {
-                            account.update(_model, _where)
-                        } else {
-                            account.add(_model)
-                        }
-                    }) // 记录用户名密码
+                updateLastLoginUser(username, password)
             } else {
                 clearCurrentUser() // 清空缓存的当前用户对象
             }
@@ -53,11 +57,21 @@ export default {
      * 用户注册
      * @param {string} username 用户名
      * @param {string} password 密码
+     * @param {string} confirmpwd 确认密码
      */
-    register(username, password) {
+    register(username, password, confirmpwd) {
         return postData(`register`, {
-            username: username,
-            password: password
+            username,
+            password,
+            confirmpwd
+        }).then(res => {
+            if (res.type == STATES.SUCCESS) {    // 登录成功
+                setCurrentUser(res.data) // 更新缓存中当前用户对象
+                updateLastLoginUser(username, password)
+            } else {
+                clearCurrentUser() // 清空缓存的当前用户对象
+            }
+            return res
         })
     },
 
@@ -69,8 +83,8 @@ export default {
      */
     findPassword(username, password) {
         return postData(`findPassword`, {
-            username: username,
-            password: password
+            username,
+            password
         })
     },
 

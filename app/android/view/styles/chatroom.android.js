@@ -1,24 +1,32 @@
 import { StyleSheet } from 'react-native'
 import {
     LIGHT,
+    LIGHT_GOLDEN,
     LIGHT_GRAY,
     LIGHT_BLUE,
     LIGHT_GREEN,
+    LIGHT_RED,
     GRAY,
+    GOLDEN,
+    RED,
+    DARK_GOLDEN,
     DARK_GREEN,
     DARK_GRAY,
     DARK_RED,
-    WINDOW_HEIGHT
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
 } from './basic'
 
 export default StyleSheet.create({
     title: {
         textAlign: 'center',
-        height: 24,
-        padding: 3
+        height: 48,
+        fontSize: 16,
+        padding: 12,
+        backgroundColor: LIGHT_GRAY
     },
     list: {
-        height: WINDOW_HEIGHT - 50 - 24 - 70,
+        height: WINDOW_HEIGHT - 48 - 24 - 70,
     },
     chatList: {
 
@@ -33,7 +41,7 @@ export default StyleSheet.create({
         lineHeight: 22
     },
     msgContent: {
-        backgroundColor: LIGHT_BLUE,
+        backgroundColor: '#f4f4f4',
         borderRadius: 4,
         marginLeft: 9,
         marginRight: 9,
@@ -57,15 +65,12 @@ export default StyleSheet.create({
         marginRight: 12,
     },
     commentContainer: {
-        bottom: 120,
         height: 47,
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row',
         borderWidth: 0,
-        borderTopWidth: 1,
-        borderTopColor: '#f3f6f8',
-        backgroundColor: '#fbfbfb',
+        backgroundColor: DARK_GRAY,
     },
     contentContainer: {
         flex: 5,
@@ -75,6 +80,7 @@ export default StyleSheet.create({
         padding: 7,
         paddingLeft: 10,
         marginBottom: -2,
+        color: LIGHT
     },
     sendBtnContainer: {
         flex: 1,
@@ -90,6 +96,6 @@ export default StyleSheet.create({
         backgroundColor: DARK_GRAY,
     },
     sendBtn: {
-        color: LIGHT_GREEN
+        color: LIGHT
     },
 })

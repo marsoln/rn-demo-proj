@@ -6,12 +6,13 @@ import React, {
     Image,
     Text,
     ToastAndroid,
+    TouchableOpacity,
     ScrollView,
-    TouchableOpacity
 } from '../../../libs/system/react'
 import apis from '../../../libs/network/apis'
 import styles from '../styles/setting'
 import basicStyles from '../styles/basic'
+import { getClient, shutDown } from '../../../libs/network/socket/chatClient'
 
 export default class Setting extends React.Component {
 
@@ -27,6 +28,7 @@ export default class Setting extends React.Component {
                 this.props.nav.immediatelyResetRouteStack([
                     { id: 'Login' }
                 ])
+                shutDown()
             })
     }
 

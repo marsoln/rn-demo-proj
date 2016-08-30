@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import STATES from './states'
 
 // const SERVER = 'http://192.168.1.3'
-const SERVER = 'http://172.26.9.135'
+const SERVER = 'http://172.26.9.137'
 const MOBILE_API = `${SERVER}`
 const GRAPHQL_API = `${SERVER}/graphql`
 const DEFAULT_HEADERS = {

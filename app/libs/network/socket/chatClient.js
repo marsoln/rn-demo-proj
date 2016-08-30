@@ -1,43 +1,81 @@
 import io from './socket.io'
 import { SERVER } from '../utils/http'
-import {getCurrentUser} from '../utils/currentUser'
+import { getCurrentUser } from '../utils/currentUser'
 
 const SERVICE_NAME_PREFIX = 'chatroom-'
-class Client {
+const SOCKET = io(SERVER)
+const client = null
+
+let noop = function () { }
+let handlers = null
+let resetHandler = () => {
+    handlers = {
+        'login': noop,
+        'user joined': noop,
+        'new message': noop,
+        'typing': noop,
+    }
+}
+
+(() => {
+    resetHandler()
+    for (let key in handlers) {
+        SOCKET.on(`${SERVICE_NAME_PREFIX}${key}`, (args) => { handlers[key](args) })
+    }
+})()
+
+
+class ChatClient {
 
     constructor() {
-        this.socket = null
-        // 尴尬...
-        let user = Object.assign({}, getCurrentUser())
-        user.name = user.username
-        this.user = user
+        this.user = Object.assign({}, getCurrentUser())
     }
 
     open() {
-        this.socket = io(SERVER)
-        this.socket.emit(SERVICE_NAME_PREFIX + 'add user', this.user)
+        if (null == this.socket) {
+            SOCKET.emit(`${SERVICE_NAME_PREFIX}add user`, this.user)
+        }
         return this
     }
 
     onUserAmountChanged(handleEvent) {
-        this.socket.on(`${SERVICE_NAME_PREFIX}login`, handleEvent)
+        handlers['login'] = handleEvent
     }
 
     onUserJoined(handleEvent) {
-        this.socket.on(`${SERVICE_NAME_PREFIX}user joined`, handleEvent)
+        handlers['user joined'] = handleEvent
     }
 
     onRecieveMessage(handleEvent) {
-        this.socket.on(`${SERVICE_NAME_PREFIX}new message`, handleEvent)
+        handlers['new message'] = handleEvent
     }
 
     onSomeoneTyping(handleEvent) {
-        this.socket.on(`${SERVICE_NAME_PREFIX}typing`, handleEvent)
+        handlers['typing'] = handleEvent
     }
 
     sendMessage(msg) {
-        this.socket.emit(`${SERVICE_NAME_PREFIX}new message`, { message: msg })
+        SOCKET.emit(`${SERVICE_NAME_PREFIX}new message`, { message: msg })
+    }
+
+    destroy() {
+        SOCKET.emit(`${SERVICE_NAME_PREFIX}disconnect`, this.user)
+        this.user = null
     }
 }
 
-export default Client
+export function getClient() {
+    if (null == client) {
+        client = new ChatClient()
+    }
+    return client.open()
+}
+
+export function shutDown() {
+    if (client) {
+        client.destroy()
+        client.user = null
+        client = null
+    }
+    resetHandler()
+}

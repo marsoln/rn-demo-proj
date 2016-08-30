@@ -2,16 +2,20 @@ import React, {
     View,
     ListView,
     Image,
+    ScrollView,
     Text,
     TextInput,
     ToastAndroid,
-    ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
 } from '../../../libs/system/react'
 import apis from '../../../libs/network/apis'
 import styles from '../styles/chatroom'
-import basicStyles from '../styles/basic'
-import Client from '../../../libs/network/socket/chatClient'
+import basicStyles, {
+    LIGHT_GRAY,
+    LIGHT_RED,
+    GRAY,
+} from '../styles/basic'
+import { getClient, shutDown } from '../../../libs/network/socket/chatClient'
 
 const TYPE = {
     SYS: 0,
@@ -25,7 +29,7 @@ export default class Chatroom extends React.Component {
         this.counter = 0
         this.chatHis = []
         this.state = {
-            content: null,
+            content: '',
             chatRoomUserAmount: 0,
             chatInfos: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
@@ -34,13 +38,13 @@ export default class Chatroom extends React.Component {
     }
 
     sendMessage() {
-        if (!this.state.content) {
+        if (!this.state.content.trim()) {
             ToastAndroid.show('不能发送空消息喔', ToastAndroid.SHORT)
         } else {
             this.chatClient.sendMessage(this.state.content)
             this.pushHis({
                 type: TYPE.HIS,
-                text: this.state.content,
+                text: this.state.content.trim(),
                 createTime: Date.now(),
                 isMine: true,
                 user: this.chatClient.user
@@ -57,49 +61,6 @@ export default class Chatroom extends React.Component {
         this.connectChatServer()
     }
 
-    renderChatHis(his) {
-        switch (his.type) {
-            case TYPE.SYS:
-                break
-            case TYPE.HIS:
-                let uri = !~his.user.avatar.indexOf('http:') ? `${apis.SERVER}/${his.user.avatar}` : his.user.avatar
-                let lines = his.text.length / 20 >>> 0
-                let _style = lines > 0 ? {
-                    width: 244,
-                    minHeight: (lines + 1) * 22
-                } : {}
-                let _listStyle = lines > 0 ? {
-                    height: _style.minHeight + 18
-                } : { height: 42 }
-
-                if (his.isMine) {
-                    // 我的聊天信息
-                    return (
-                        <View key={his.id}
-                            style={[styles.listItem, styles.isMine, _listStyle]} >
-                            <View  style={[styles.msgContent, styles.isMyContent]}>
-                                <Text style={[styles.message, _style]}>{his.text}</Text>
-                            </View>
-                            <Image source={{ uri: uri }}
-                                style={[styles.avatar, styles.isMyAvatar]}></Image>
-                        </View>
-                    )
-                } else {
-                    // 其他人发送的聊天信息
-                    return (
-                        <View key={his.id}
-                            style={[styles.listItem, _listStyle]} >
-                            <Image source={{ uri: uri }}
-                                style={styles.avatar}></Image>
-                            <View  style={[styles.msgContent]}>
-                                <Text style={[styles.message, _style]}>{his.text}</Text>
-                            </View>
-                        </View>
-                    )
-                }
-        }
-    }
-
     pushHis(his) {
         his.id = this.counter++;
         this.chatHis[this.chatHis.length] = his
@@ -108,22 +69,25 @@ export default class Chatroom extends React.Component {
         })
     }
 
+    scrollTop() {
+        setTimeout(() => {
+            this.refs.chatList.scrollTo({
+                y: 0,
+                animated: true,
+            })
+        }, 400)
+    }
+
     scrollDown() {
         setTimeout(() => {
             this.refs.chatList.scrollTo({
                 y: -1 >>> 1
             })
-        }, 200)
-    }
-
-    autoScrollDown() {
-        if (this.refs.chatList.scrollHeight) {
-            this.scrollDown()
-        }
+        }, 300)
     }
 
     connectChatServer() {
-        this.chatClient = new Client().open()
+        this.chatClient = getClient()
 
         // 聊天室信息
         this.chatClient.onUserAmountChanged((_data) => {
@@ -133,10 +97,11 @@ export default class Chatroom extends React.Component {
         })
 
         // 用户登入信息
-        this.chatClient.onUserJoined((_user) => {
+        this.chatClient.onUserJoined((_data) => {
+            this.state.chatRoomUserAmount = _data.numUsers
             this.pushHis({
                 type: TYPE.SYS,
-                text: `${_user.name}加入了聊天室.`
+                text: `---->  ${_data.user.name}加入了聊天室  <----`
             })
         })
 
@@ -149,23 +114,71 @@ export default class Chatroom extends React.Component {
                 isMine: false,
                 user: _msg.sender
             })
-            this.autoScrollDown()
+            this.scrollDown()
         })
+    }
+
+    renderChatHis(his) {
+        switch (his.type) {
+            case TYPE.SYS:
+                return (
+                    <View key={his.id}>
+                        <Text style={{ color: '#8e8e8e', textAlign: 'center' }}>{his.text}</Text>
+                    </View>
+                )
+            case TYPE.HIS:
+                let uri = !~his.user.avatar.indexOf('http:') ? `${apis.SERVER}/${his.user.avatar}` : his.user.avatar
+                let paras = his.text.trim().split('\n')
+                let fullLines = 0, lines
+                paras.forEach(p => fullLines += p.length / 20 >>> 0)
+                lines = paras.length + fullLines - 1
+                let _style = lines > 0 ? {
+                    minHeight: (lines + 1) * 22
+                } : {}
+                if (fullLines > 0) {
+                    _style.width = 244
+                }
+                let _listStyle = lines > 0 ? {
+                    height: _style.minHeight + 18
+                } : { height: 42 }
+
+                if (his.isMine) {
+                    // 我的聊天信息
+                    return (<View key={his.id}
+                        style={[styles.listItem, styles.isMine, _listStyle]} >
+                        <View  style={[styles.msgContent, styles.isMyContent]}>
+                            <Text style={[styles.message, _style]}>{his.text}</Text>
+                        </View>
+                        <Image source={{ uri: uri }}
+                            style={[styles.avatar, styles.isMyAvatar]}></Image>
+                    </View>)
+                } else {
+                    return (<View key={his.id}
+                        style={[styles.listItem, _listStyle]}>
+                        <Image source={{ uri: uri }}
+                            style={styles.avatar}></Image>
+                        <View  style={[styles.msgContent]}>
+                            <Text style={[styles.message, _style]}>{his.text}</Text>
+                        </View>
+                    </View>)
+                }
+        }
     }
 
     render() {
         return (
             <View>
-                <View style={basicStyles.window}>
-                    <Text style={styles.title}>当前在线 {this.state.chatRoomUserAmount} 人</Text>
-                    <View style={styles.list}>
-                        <ListView
-                            ref="chatList"
-                            style={styles.chatList}
-                            dataSource={this.state.chatInfos}
-                            renderRow={this.renderChatHis.bind(this) }
-                            />
-                    </View>
+                <Text style={styles.title}
+                    onPress={this.scrollTop.bind(this) }>
+                    当前在线 {this.state.chatRoomUserAmount} 人
+                </Text>
+                <View style={styles.list}>
+                    <ListView
+                        ref="chatList"
+                        style={styles.chatList}
+                        dataSource={this.state.chatInfos}
+                        renderRow={this.renderChatHis.bind(this) }
+                        />
                 </View>
                 <View style={styles.commentContainer}>
                     <View style={styles.contentContainer}>
@@ -173,8 +186,10 @@ export default class Chatroom extends React.Component {
                             ref="contentInput"
                             style={styles.content}
                             placeholder="你想说点啥"
-                            value={this.state.content}
+                            multiline={true}
+                            placeholderTextColor='#cecece'
                             underlineColorAndroid="transparent"
+                            value={this.state.content}
                             onChangeText={(text) => this.setState({ content: text }) }/>
                     </View>
                     <TouchableOpacity style={styles.sendBtnContainer}
