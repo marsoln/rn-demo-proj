@@ -43,14 +43,14 @@ export default class MainTabView extends React.Component {
             title="主页"
             renderIcon={
               () => <Icon
-                name='bell'
+                name='home'
                 size={22}
                 style={{ height: 22 }}
                 color='#656468'
                 />}
             renderSelectedIcon={() =>
               <Icon
-                name='bell-o'
+                name='home'
                 size={22}
                 style={{ height: 22 }}
                 color='#3b5998'

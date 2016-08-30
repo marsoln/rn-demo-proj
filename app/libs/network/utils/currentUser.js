@@ -3,36 +3,39 @@
  */
 let currentLoginUser = null
 
-/**
- * 获取当前登录用户信息
- * @returns {*}
- */
-export function getCurrentUser() {
-  return currentLoginUser
-}
+export default {
+  /**
+   * 获取当前登录用户信息
+   * @returns {*}
+   */
+  getCurrentUser() {
+    return currentLoginUser
+  },
 
-/**
- * 注销当前用户
- */
-export function clearCurrentUser() {
-  currentLoginUser = null
-}
+  /**
+   * 注销当前用户
+   */
+  clearCurrentUser() {
+    currentLoginUser = null
+  },
 
-/**
- * 设置当前用户信息
- * @param user 用户信息
- */
-export function setCurrentUser(user) {
-  debugger
-  currentLoginUser = user
-  currentLoginUser.name = user.username
-  Object.freeze(currentLoginUser)
-}
+  /**
+   * 设置当前用户信息
+   * @param user 用户信息
+   */
+  setCurrentUser(user) {
+    debugger
+    currentLoginUser = user
+    currentLoginUser.name = user.username
+    Object.freeze(currentLoginUser)
+  },
 
-/**
- * 获取当前用户ID
- * @returns {*}
- */
-export function getCurrentUserId() {
-  return currentLoginUser && currentLoginUser['id']
+  /**
+   * 获取当前用户ID
+   * @returns {*}
+   */
+  getCurrentUserId() {
+    return currentLoginUser && currentLoginUser['id']
+  }
+
 }

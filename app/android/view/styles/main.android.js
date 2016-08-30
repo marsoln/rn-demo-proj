@@ -1,4 +1,7 @@
 import { StyleSheet } from 'react-native'
+import {
+    GOLDEN
+} from './basic'
 export default StyleSheet.create({
     list: {
         height: 300,
@@ -29,5 +32,9 @@ export default StyleSheet.create({
         height: 20,
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    button: {
+        bottom: 130,
+        backgroundColor: GOLDEN,
     }
 })
