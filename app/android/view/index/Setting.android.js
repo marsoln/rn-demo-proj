@@ -27,12 +27,10 @@ export default class Setting extends React.Component {
         apis
             .UserState
             .logout()
-            .then(res => {
-                this.props.nav.immediatelyResetRouteStack([
-                    { id: 'Login' }
-                ])
-                shutDown()
-            })
+        shutDown()
+        this.props.nav.immediatelyResetRouteStack([
+            { id: 'Login' }
+        ])
     }
 
     render() {
@@ -43,9 +41,14 @@ export default class Setting extends React.Component {
                     <View style={styles.header}>
                         <Image style={styles.avatar}
                             source={{ uri: uri }}/>
-                        <Text style={styles.username}>
-                            {this.state.currentUser.username}
-                        </Text>
+                        <View style={styles.usernameContainer}>
+                            <Text style={styles.nickname}>
+                                {this.state.currentUser.nickname}
+                            </Text>
+                            <Text style={styles.username}>
+                                {this.state.currentUser.username}
+                            </Text>
+                        </View>
                     </View>
                 </View>
                 <TouchableOpacity style={[basicStyles.btnContainer, basicStyles.btnDanger, styles.logoutBtn]} onPress={this.logout.bind(this) }>

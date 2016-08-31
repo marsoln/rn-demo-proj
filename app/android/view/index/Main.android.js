@@ -12,6 +12,7 @@ import React, {
 import apis from '../../../libs/network/apis'
 import styles from '../styles/main'
 import basicStyles from '../styles/basic'
+import DelayTrigger from '../../../libs/tools/delayTrigger'
 
 export default class Main extends React.Component {
 
@@ -26,7 +27,7 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchData()
+        // this.fetchData()
     }
 
     renderItem(item, section, index) {
@@ -43,17 +44,19 @@ export default class Main extends React.Component {
     }
 
     fetchData() {
-        return apis
-            .UserApi
-            .userList()
-            .then((_data) => {
-                if (_data) {
-                    this.setState({
-                        dataList: this.state.dataList.cloneWithRows(_data['userList'])
-                    })
-                }
-                // ToastAndroid.show('数据更新完毕!', ToastAndroid.SHORT)
-            })
+        DelayTrigger.addTrigger('main.fetchData', () => {
+            return apis
+                .UserApi
+                .userList()
+                .then((_data) => {
+                    if (_data) {
+                        this.setState({
+                            dataList: this.state.dataList.cloneWithRows(_data['userList'])
+                        })
+                        ToastAndroid.show('报~大王,信息装载完毕!', ToastAndroid.SHORT)
+                    }
+                })
+        })
     }
 
     render() {
@@ -69,7 +72,7 @@ export default class Main extends React.Component {
                     </View>
                 </View>
                 <TouchableOpacity style={[basicStyles.btnContainer, styles.button]} onPress={this.fetchData.bind(this) }>
-                    <Text style={basicStyles.button}>从服务器加载数据!!</Text>
+                    <Text style={basicStyles.button}>给我看看这个世界里都有谁!!</Text>
                 </TouchableOpacity>
             </View>
         )

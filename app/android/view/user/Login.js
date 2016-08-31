@@ -79,17 +79,23 @@ export default class Login extends React.Component {
                     <View style={[basicStyles.container, styles.container, styles.bgGreen]}>
                         <Text style={styles.header}>进来坐坐</Text>
                         <View>
-                            <TextInput
-                                style={basicStyles.lineInput}
-                                placeholder="用户名"
-                                value={this.state.username}
-                                onChangeText={(text) => this.setState({ username: text }) }/>
-                            <TextInput
-                                style={basicStyles.lineInput}
-                                placeholder="密码"
-                                secureTextEntry={true}
-                                defaultValue={this.state.password}
-                                onChangeText={(text) => this.setState({ password: text }) } />
+                            <View style={basicStyles.lineInputWrapper}>
+                                <TextInput
+                                    style={basicStyles.lineInput}
+                                    placeholder="用户名"
+                                    value={this.state.username}
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={(text) => this.setState({ username: text }) }/>
+                            </View>
+                            <View style={basicStyles.lineInputWrapper}>
+                                <TextInput
+                                    style={basicStyles.lineInput}
+                                    placeholder="密码"
+                                    secureTextEntry={true}
+                                    defaultValue={this.state.password}
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={(text) => this.setState({ password: text }) } />
+                            </View>
                         </View>
                         <View style={[basicStyles.link, basicStyles.right]}>
                             <Text style={styles.right}

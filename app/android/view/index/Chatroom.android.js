@@ -16,11 +16,15 @@ import basicStyles, {
     GRAY,
 } from '../styles/basic'
 import { getClient, shutDown } from '../../../libs/network/socket/chatClient'
+import DelayTrigger from '../../../libs/tools/delayTrigger'
 
-const TYPE = {
+const INFO_TYPE = {
     SYS: 0,
-    HIS: 1
+    CHAT: 1
 }
+
+let typingGuys = []
+let typingStatus = false
 
 export default class Chatroom extends React.Component {
 
@@ -30,20 +34,42 @@ export default class Chatroom extends React.Component {
         this.chatHis = []
         this.state = {
             content: '',
-            chatRoomUserAmount: 0,
+            chatStatus: '屋里静悄悄的...',
             chatInfos: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,
             })
         }
     }
 
+    componentDidMount() {
+        this.connectChatServer()
+    }
+
+    enterChatContent(text) {
+
+        this.setState({
+            content: text
+        })
+
+        if (typingStatus == false) {
+            this.chatClient.beginTyping()
+            typingStatus = true
+        }
+        DelayTrigger.addTrigger('chat.typing', () => {
+            this.chatClient.stopTyping()
+            typingStatus = false
+        }, this, 1200)
+    }
+    /**
+     * 发送消息
+     */
     sendMessage() {
         if (!this.state.content.trim()) {
             ToastAndroid.show('不能发送空消息喔', ToastAndroid.SHORT)
         } else {
             this.chatClient.sendMessage(this.state.content)
             this.pushHis({
-                type: TYPE.HIS,
+                type: INFO_TYPE.CHAT,
                 text: this.state.content.trim(),
                 createTime: Date.now(),
                 isMine: true,
@@ -57,10 +83,9 @@ export default class Chatroom extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.connectChatServer()
-    }
-
+    /**
+     * 追加聊天记录
+     */
     pushHis(his) {
         his.id = this.counter++;
         this.chatHis[this.chatHis.length] = his
@@ -69,46 +94,56 @@ export default class Chatroom extends React.Component {
         })
     }
 
+    /**
+     * 滚上去~
+     */
     scrollTop() {
-        setTimeout(() => {
+        DelayTrigger.addTrigger('chat.scrollTop', () => {
             this.refs.chatList.scrollTo({
                 y: 0,
                 animated: true,
             })
-        }, 400)
+        })
     }
 
+    /**
+     * 滚下来
+     */
     scrollDown() {
-        setTimeout(() => {
+        DelayTrigger.addTrigger('chat.scrollDown', () => {
             this.refs.chatList.scrollTo({
                 y: -1 >>> 1
             })
-        }, 600)
+        })
     }
 
+    /**
+     * 连接到聊天服务器
+     */
     connectChatServer() {
+        // ToastAndroid.show('connect server', 500)
         this.chatClient = getClient()
 
-        // 聊天室信息
-        this.chatClient.onUserAmountChanged((_data) => {
-            this.setState({
-                chatRoomUserAmount: _data['numUsers']
+        // 用户登入信息
+        this.chatClient['on user joined']((_data) => {
+            this.pushHis({
+                type: INFO_TYPE.SYS,
+                text: `${_data.user.name}加入了聊天室`
             })
         })
 
-        // 用户登入信息
-        this.chatClient.onUserJoined((_data) => {
-            this.state.chatRoomUserAmount = _data.numUsers
+        // 有人退出聊天室
+        this.chatClient['on disconnect']((_data) => {
             this.pushHis({
-                type: TYPE.SYS,
-                text: `---->  ${_data.user.name}加入了聊天室  <----`
+                type: INFO_TYPE.SYS,
+                text: `${_data.user.name}离开了聊天室`
             })
         })
 
         // 接收信息
-        this.chatClient.onRecieveMessage((_msg) => {
+        this.chatClient['on new message']((_msg) => {
             this.pushHis({
-                type: TYPE.HIS,
+                type: INFO_TYPE.CHAT,
                 text: _msg.message,
                 createTime: _msg.createTime,
                 isMine: false,
@@ -116,17 +151,53 @@ export default class Chatroom extends React.Component {
             })
             this.scrollDown()
         })
+
+        // 有人输入信息
+        this.chatClient['on typing']((_data) => {
+            if (!typingGuys.filter(d => d['_id'] == _data['_id']).length) {
+                typingGuys[typingGuys.length] = _data
+            }
+            this.updateChatStatus()
+        })
+
+        // 有人停止输入
+        this.chatClient['on stop typing']((_data) => {
+            let _index = typingGuys.findIndex(d => d['_id'] == _data['_id'])
+            if (_index > -1) {
+                typingGuys.splice(_index, 1)
+            }
+            this.updateChatStatus()
+        })
+
+        this.chatClient.open()
     }
 
+    updateChatStatus() {
+        if (typingGuys.length > 0) {
+            this.setState({
+                chatStatus: typingGuys.reduce((p, n) => {
+                    return p += n['user']['name'] + ' '
+                }, '') + '正在输入'
+            })
+        } else {
+            this.setState({
+                chatStatus: '屋里静悄悄的...'
+            })
+        }
+    }
+
+    /**
+     * 渲染聊天记录
+     */
     renderChatHis(his) {
         switch (his.type) {
-            case TYPE.SYS:
+            case INFO_TYPE.SYS:  // 系统信息
                 return (
                     <View key={his.id}>
-                        <Text style={{ color: '#8e8e8e', textAlign: 'center' }}>{his.text}</Text>
+                        <Text style={styles.sysInfo}>{his.text}</Text>
                     </View>
                 )
-            case TYPE.HIS:
+            case INFO_TYPE.CHAT:  // 聊天记录
                 let uri = !~his.user.avatar.indexOf('http:') ? `${apis.SERVER}/${his.user.avatar}` : his.user.avatar
                 let paras = his.text.trim().split('\n')
                 let fullLines = 0, lines
@@ -139,14 +210,14 @@ export default class Chatroom extends React.Component {
                     _style.width = 244
                 }
                 let _listStyle = lines > 0 ? {
-                    height: _style.minHeight + 18
-                } : { height: 42 }
+                    height: _style.minHeight + 12
+                } : { height: 38 }
 
                 if (his.isMine) {
                     // 我的聊天信息
                     return (<View key={his.id}
                         style={[styles.listItem, styles.isMine, _listStyle]} >
-                        <View  style={[styles.msgContent, styles.isMyContent]}>
+                        <View style={[styles.msgContent, styles.isMyContent]}>
                             <Text style={[styles.message, _style]}>{his.text}</Text>
                         </View>
                         <Image source={{ uri: uri }}
@@ -155,8 +226,11 @@ export default class Chatroom extends React.Component {
                 } else {
                     return (<View key={his.id}
                         style={[styles.listItem, _listStyle]}>
-                        <Image source={{ uri: uri }}
-                            style={styles.avatar}></Image>
+                        <TouchableOpacity
+                            onPress={ () => this.viewProfile(his) }>
+                            <Image source={{ uri: uri }}
+                                style={styles.avatar}></Image>
+                        </TouchableOpacity>
                         <View  style={[styles.msgContent]}>
                             <Text style={[styles.message, _style]}>{his.text}</Text>
                         </View>
@@ -165,12 +239,16 @@ export default class Chatroom extends React.Component {
         }
     }
 
+    viewProfile(his) {
+        ToastAndroid.show(his.user.name, 500)
+    }
+
     render() {
         return (
             <View>
                 <Text style={styles.title}
                     onPress={this.scrollTop.bind(this) }>
-                    当前在线 {this.state.chatRoomUserAmount} 人
+                    {this.state.chatStatus}
                 </Text>
                 <View style={styles.list}>
                     <ListView
@@ -190,7 +268,7 @@ export default class Chatroom extends React.Component {
                             placeholderTextColor='#cecece'
                             underlineColorAndroid="transparent"
                             value={this.state.content}
-                            onChangeText={(text) => this.setState({ content: text }) }/>
+                            onChangeText={this.enterChatContent.bind(this) }/>
                     </View>
                     <TouchableOpacity style={styles.sendBtnContainer}
                         onPress={this.sendMessage.bind(this) }>

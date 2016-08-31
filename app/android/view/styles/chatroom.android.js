@@ -8,7 +8,9 @@ import {
     LIGHT_RED,
     GRAY,
     GOLDEN,
+    GREEN,
     RED,
+    DARK,
     DARK_GOLDEN,
     DARK_GREEN,
     DARK_GRAY,
@@ -16,20 +18,23 @@ import {
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 } from './basic'
+let listHeight = WINDOW_HEIGHT - 48 - 24 - 70
 
 export default StyleSheet.create({
     title: {
         textAlign: 'center',
         height: 48,
-        fontSize: 16,
-        padding: 12,
-        backgroundColor: LIGHT_GRAY
+        paddingTop: 14,
+        fontSize: 14,
+        backgroundColor: DARK_GRAY,
+        color: LIGHT_GREEN,
     },
     list: {
-        height: WINDOW_HEIGHT - 48 - 24 - 70,
+        height: listHeight,
+        // backgroundColor: LIGHT,
     },
     chatList: {
-
+        paddingTop: 3,
     },
     listItem: {
         flexDirection: 'row',
@@ -37,8 +42,13 @@ export default StyleSheet.create({
         marginBottom: 3,
         flex: 1,
     },
+    sysInfo: {
+        color: GREEN,
+        textAlign: 'center',
+        padding: 10,
+    },
     message: {
-        lineHeight: 22
+        color: DARK,
     },
     msgContent: {
         backgroundColor: '#f4f4f4',
@@ -64,11 +74,16 @@ export default StyleSheet.create({
         marginLeft: 1,
         marginRight: 12,
     },
+    active: {
+        width: 55,
+        height: 55,
+        borderRadius: 90,
+    },
     commentContainer: {
-        height: 47,
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row',
+        marginTop: 2,
         borderWidth: 0,
         backgroundColor: DARK_GRAY,
     },
@@ -84,17 +99,18 @@ export default StyleSheet.create({
     sendBtnContainer: {
         flex: 1,
         margin: 0,
-        marginTop: -3,
         height: 32,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,
         borderWidth: 0.5,
         borderColor: LIGHT_BLUE,
-        marginRight: 8,
+        marginRight: 3,
         backgroundColor: GRAY,
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     sendBtn: {
-        color: LIGHT
+        color: LIGHT,
     },
 })
