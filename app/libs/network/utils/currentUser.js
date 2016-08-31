@@ -24,7 +24,6 @@ export default {
    * @param user 用户信息
    */
   setCurrentUser(user) {
-    debugger
     currentLoginUser = user
     currentLoginUser.name = user.username
     Object.freeze(currentLoginUser)

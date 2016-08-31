@@ -14,6 +14,8 @@ let resetHandler = () => {
         'user joined': noop,
         'new message': noop,
         'typing': noop,
+        'stop typing': noop,
+        'disconnect': noop,
     }
 }
 
@@ -28,39 +30,35 @@ let resetHandler = () => {
 class ChatClient {
 
     constructor() {
-        this.user = Object.assign({}, currentUser.getCurrentUser())
+        for (let key in handlers) {
+            this[`on ${key}`] = (handlerEvent) => {
+                handlers[key] = handlerEvent
+            }
+        }
     }
 
     open() {
-        if (null == this.socket) {
-            SOCKET.emit(`${SERVICE_NAME_PREFIX}add user`, this.user)
-        }
+        this.user = Object.assign({}, currentUser.getCurrentUser())
+        SOCKET.emit(`${SERVICE_NAME_PREFIX}add user`, this.user)
         return this
-    }
-
-    onUserAmountChanged(handleEvent) {
-        handlers['login'] = handleEvent
-    }
-
-    onUserJoined(handleEvent) {
-        handlers['user joined'] = handleEvent
-    }
-
-    onRecieveMessage(handleEvent) {
-        handlers['new message'] = handleEvent
-    }
-
-    onSomeoneTyping(handleEvent) {
-        handlers['typing'] = handleEvent
     }
 
     sendMessage(msg) {
         SOCKET.emit(`${SERVICE_NAME_PREFIX}new message`, { message: msg })
     }
 
+    beginTyping() {
+        SOCKET.emit(`${SERVICE_NAME_PREFIX}typing`)
+    }
+
+    stopTyping() {
+        SOCKET.emit(`${SERVICE_NAME_PREFIX}stop typing`)
+    }
+
     destroy() {
-        SOCKET.emit(`${SERVICE_NAME_PREFIX}disconnect`, this.user)
+        // SOCKET.emit(`${SERVICE_NAME_PREFIX}disconnect`, this.user)
         this.user = null
+        resetHandler()
     }
 }
 
@@ -68,14 +66,12 @@ export function getClient() {
     if (null == client) {
         client = new ChatClient()
     }
-    return client.open()
+    return client
 }
 
 export function shutDown() {
     if (client) {
         client.destroy()
-        client.user = null
         client = null
     }
-    resetHandler()
 }

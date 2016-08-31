@@ -76,25 +76,34 @@ export default class Register extends React.Component {
             return (
                 <View>
                     <View style={[basicStyles.container, styles.container, styles.bgYellow]}>
-                        <Text style={styles.header}>来嘛,客官~</Text>
+                        <Text style={styles.header}>来嘛, 客官~</Text>
                         <View>
-                            <TextInput
-                                ref="username"
-                                style={basicStyles.lineInput}
-                                placeholder="用户名"
-                                onChangeText={(text) => this.setState({ username: text }) }/>
-                            <TextInput
-                                ref="password"
-                                style={basicStyles.lineInput}
-                                placeholder="密码"
-                                secureTextEntry={true}
-                                onChangeText={(text) => this.setState({ password: text }) } />
-                            <TextInput
-                                ref="confirmPassword"
-                                style={basicStyles.lineInput}
-                                placeholder="确认密码"
-                                secureTextEntry={true}
-                                onChangeText={(text) => this.setState({ confirmPassword: text }) } />
+                            <View style={basicStyles.lineInputWrapper}>
+                                <TextInput
+                                    ref="username"
+                                    style={basicStyles.lineInput}
+                                    placeholder="用户名"
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={(text) => this.setState({ username: text }) }/>
+                            </View>
+                            <View style={basicStyles.lineInputWrapper}>
+                                <TextInput
+                                    ref="password"
+                                    style={basicStyles.lineInput}
+                                    placeholder="密码"
+                                    underlineColorAndroid="transparent"
+                                    secureTextEntry={true}
+                                    onChangeText={(text) => this.setState({ password: text }) } />
+                            </View>
+                            <View style={basicStyles.lineInputWrapper}>
+                                <TextInput
+                                    ref="confirmPassword"
+                                    style={basicStyles.lineInput}
+                                    placeholder="确认密码"
+                                    underlineColorAndroid="transparent"
+                                    secureTextEntry={true}
+                                    onChangeText={(text) => this.setState({ confirmPassword: text }) } />
+                            </View>
                         </View>
                         <View style={[basicStyles.link, basicStyles.right]}>
                             <Text style={styles.right}

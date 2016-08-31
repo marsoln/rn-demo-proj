@@ -4,7 +4,7 @@ const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_GOLDEN = '#ECE165', LIGHT
 
 const GRAY = '#989898', GOLDEN = '#DED537', RED = '#D65042'
 
-const DARK = '#3e3e3e', DARK_BLUE = '#282E5E', DARK_GOLDEN = '#ACA125', DARK_RED = '#B63032', DARK_GREEN = '#346428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
+const DARK = '#2f441f', DARK_BLUE = '#282E5E', DARK_GOLDEN = '#ACA125', DARK_RED = '#B63032', DARK_GREEN = '#346428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
 
 const WINDOW_WIDTH = Dimensions.get('window').width, WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -44,15 +44,19 @@ const DEFAULT = StyleSheet.create({
         borderColor: DARK_RED,
         backgroundColor: LIGHT_RED,
     },
-    lineInput: {
-        textAlign: 'left',
+    lineInputWrapper: {
         backgroundColor: LIGHT_GREEN,
-        fontSize: 16,
+        borderRadius: 10,
         marginLeft: 32,
         marginRight: 32,
         marginTop: 0,
-        marginBottom: 3,
-        padding: 8
+        marginBottom: 11,
+    },
+    lineInput: {
+        textAlign: 'left',
+        paddingLeft: 12,
+        fontSize: 16,
+        padding: 5,
     },
     link: {
         marginTop: 8,
