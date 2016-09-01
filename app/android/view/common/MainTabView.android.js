@@ -10,6 +10,16 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
+import {
+  LIGHT_GRAY,
+  LIGHT,
+  LIGHT_SILVER,
+  BLUE,
+  GOLDEN,
+  GRAY,
+  DARK_BLUE,
+  LIGHT_GREEN,
+} from '../styles/basic'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import TabNavigator from 'react-native-tab-navigator'
 import Main from '../index/Main'
@@ -30,7 +40,6 @@ export default class MainTabView extends React.Component {
   switchPage(keyword) {
     this.setState({
       selectedTab: keyword,
-      // hiddenStatus: keyword == 'Chat'
     })
   }
 
@@ -40,7 +49,6 @@ export default class MainTabView extends React.Component {
         <TabNavigator>
           <TabNavigator.Item
             selected={this.state.selectedTab === 'Main'}
-            title="主页"
             renderIcon={
               () => <Icon
                 name='home'
@@ -53,7 +61,7 @@ export default class MainTabView extends React.Component {
                 name='home'
                 size={22}
                 style={{ height: 22 }}
-                color='#3b5998'
+                color={LIGHT_GREEN}
                 />}
             titleStyle={{ fontSize: 12 }}
             onPress={() => this.switchPage('Main') }>
@@ -62,7 +70,6 @@ export default class MainTabView extends React.Component {
 
           <TabNavigator.Item
             selected={this.state.selectedTab === 'Chat'}
-            title="聊天"
             renderIcon={
               () => <Icon
                 name='comments'
@@ -75,7 +82,7 @@ export default class MainTabView extends React.Component {
                 name='comments-o'
                 size={22}
                 style={{ height: 22 }}
-                color='#3b5998'
+                color={BLUE}
                 />}
             titleStyle={{ fontSize: 12 }}
             onPress={() => this.switchPage('Chat') }>
@@ -84,7 +91,6 @@ export default class MainTabView extends React.Component {
 
           <TabNavigator.Item
             selected={this.state.selectedTab === 'Setting'}
-            title="我"
             renderIcon={
               () => <Icon
                 name='user'
@@ -97,7 +103,7 @@ export default class MainTabView extends React.Component {
                 name='user'
                 size={22}
                 style={{ height: 22 }}
-                color='#3b5998'
+                color={GOLDEN}
                 />}
             titleStyle={{ fontSize: 12 }}
             onPress={() => this.switchPage('Setting') }>

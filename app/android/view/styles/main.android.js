@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import {
+    DARK,
     GOLDEN
 } from './basic'
 export default StyleSheet.create({
@@ -35,6 +36,6 @@ export default StyleSheet.create({
     },
     button: {
         bottom: 130,
-        backgroundColor: GOLDEN,
+        backgroundColor: DARK,
     }
 })

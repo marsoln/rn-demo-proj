@@ -1,8 +1,8 @@
 import { StyleSheet, Dimensions} from 'react-native'
 
-const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_GOLDEN = '#ECE165', LIGHT_RED = '#E23337', LIGHT_GREEN = '#AAC45C', LIGHT_GRAY = '#efefef', LIGHT_BORDER = '#8ea367'
+const LIGHT = '#fefefe', LIGHT_BLUE = '#aaccee', LIGHT_GOLDEN = '#ECE165', LIGHT_RED = '#E23337', LIGHT_GREEN = '#AAC45C', LIGHT_GRAY = '#efefef', LIGHT_BORDER = '#8ea367', LIGHT_SILVER = '#F8F8F8'
 
-const GRAY = '#989898', GOLDEN = '#DED537', RED = '#D65042'
+const GRAY = '#989898', GOLDEN = '#DED537', RED = '#D65042', BLUE = '#7593da'
 
 const DARK = '#2f441f', DARK_BLUE = '#282E5E', DARK_GOLDEN = '#ACA125', DARK_RED = '#B63032', DARK_GREEN = '#346428', DARK_GRAY = '#575757', DARK_BORDER = '#3e8299'
 
@@ -93,9 +93,11 @@ LIGHT_RED,
 LIGHT_GREEN,
 LIGHT_GRAY,
 LIGHT_BORDER,
+LIGHT_SILVER,
 
-GRAY,
+BLUE,
 GOLDEN,
+GRAY,
 RED,
 
 DARK,

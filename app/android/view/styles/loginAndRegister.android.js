@@ -4,6 +4,7 @@ import {
     LIGHT_GRAY,
     LIGHT_GREEN,
     LIGHT_GOLDEN,
+    RED,
     GRAY,
     DARK_GREEN,
     WINDOW_HEIGHT,
