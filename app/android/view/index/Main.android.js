@@ -13,6 +13,7 @@ import apis from '../../../libs/network/apis'
 import styles from '../styles/main'
 import basicStyles from '../styles/basic'
 import DelayTrigger from '../../../libs/tools/delayTrigger'
+import Button from '../components/Button'
 
 export default class Main extends React.Component {
 
@@ -27,11 +28,11 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
-        // this.fetchData()
+        this.fetchData()
     }
 
     renderItem(item, section, index) {
-        let uri = !~item.avatar.indexOf('http:') ? `${apis.SERVER}/${item.avatar}` : item.avatar
+        let uri = `${apis.SERVER}/${item.avatar}`
         return (
             <View style={[styles.listItem, index % 2 == 0 ? styles.light : styles.dark]}>
                 <Image style={styles.avatar}
@@ -44,36 +45,29 @@ export default class Main extends React.Component {
     }
 
     fetchData() {
-        DelayTrigger.addTrigger('main.fetchData', () => {
-            return apis
-                .UserApi
-                .userList()
-                .then((_data) => {
-                    if (_data) {
-                        this.setState({
-                            dataList: this.state.dataList.cloneWithRows(_data['userList'])
-                        })
-                        ToastAndroid.show('报~大王,信息装载完毕!', ToastAndroid.SHORT)
-                    }
-                })
-        })
+        return apis
+            .UserApi
+            .userList()
+            .then((_data) => {
+                if (_data) {
+                    this.setState({
+                        dataList: this.state.dataList.cloneWithRows(_data['userList'])
+                    })
+                    ToastAndroid.show('报~大王,信息装载完毕!', ToastAndroid.SHORT)
+                }
+            })
     }
 
     render() {
         return (
             <View>
                 <View style={basicStyles.window}>
-                    <View
-                        style={styles.list}>
-                        <ListView
-                            ref="list"
+                    <View style={styles.list}>
+                        <ListView ref="list"
                             dataSource={this.state.dataList}
                             renderRow={this.renderItem.bind(this) } />
                     </View>
                 </View>
-                <TouchableOpacity style={[basicStyles.btnContainer, styles.button]} onPress={this.fetchData.bind(this) }>
-                    <Text style={basicStyles.button}>给我看看这个世界里都有谁!!</Text>
-                </TouchableOpacity>
             </View>
         )
     }

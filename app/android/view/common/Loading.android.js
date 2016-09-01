@@ -50,6 +50,7 @@ export default class Loading extends React.Component {
                         .UserState
                         .checkLoginState()
                         .then((resData) => {
+                            debugger
                             if (resData.type == 1) {
                                 //正常登录
                                 this.naviTo(() => {

@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native'
 import {
     LIGHT_GRAY,
+    LIGHT,
+    LIGHT_GOLDEN,
+    LIGHT_SILVER,
     GRAY,
+    DARK_GOLDEN,
 } from './basic'
 
 export default StyleSheet.create({
@@ -12,6 +16,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 1,
         borderColor: LIGHT_GRAY,
+        marginBottom: 8,
+        backgroundColor: LIGHT_SILVER,
     },
     avatar: {
         width: 60,
@@ -30,6 +36,24 @@ export default StyleSheet.create({
     username: {
         fontSize: 16,
         color: GRAY,
+    },
+    profileItem: {
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    itemTitle: {
+        flex: 3,
+        fontSize: 16,
+        height: 20,
+        textAlign: 'right',
+        color: GRAY,
+    },
+    itemValue: {
+        flex: 7,
+        fontSize: 16,
+        minHeight: 22,
+        paddingLeft: 8,
     },
     logoutBtn: {
         bottom: 130

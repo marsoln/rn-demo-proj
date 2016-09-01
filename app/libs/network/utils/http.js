@@ -160,7 +160,7 @@ let formatQuery = function (baseUrl, query, varibles, operationName) {
     if (operationName) {
         queryStr += `&operationName=${operationName}`
     }
-    return queryStr
+    return queryStr.replace(/(\s+|\n)/g,' ')
 }
 
 /**
