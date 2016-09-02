@@ -152,17 +152,6 @@ export function postFormData(action, formParams) {
         })
 }
 
-let formatQuery = function (baseUrl, query, varibles, operationName) {
-    let queryStr = `${baseUrl}?query=${query || '{}'}`
-    if (varibles) {
-        queryStr += `&varibles=${varibles}`
-    }
-    if (operationName) {
-        queryStr += `&operationName=${operationName}`
-    }
-    return queryStr.replace(/(\s+|\n)/g,' ')
-}
-
 /**
  * graphql 查询
  * @param {string} query 查询语句
@@ -170,20 +159,32 @@ let formatQuery = function (baseUrl, query, varibles, operationName) {
  * @param {string} operationName 操作类型名称
  */
 export function graphql(query, varibles, operationName) {
-    let url = formatQuery(GRAPHQL_API, query, varibles, operationName)
-    return fetch(url, {
-        method: 'GET',
-        headers: DEFAULT_HEADERS
+    return new Promise((resolve, reject) => {
+        fetch(GRAPHQL_API, {
+            method: 'POST',
+            headers: DEFAULT_HEADERS,
+            "Content-Type": 'application/graphql',
+            body: JSON.stringify({
+                query: query,
+                varibles: varibles || null,
+                operationName: operationName || null,
+            }, (k, v) => {
+                if (typeof v === 'string') {
+                    return v.replace(/(\s+|\n) /g, ' ')
+                }
+                return v
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.type == STATES.UNAUTHENTICATED || res.type == STATES.INTERNAL_ERR) {
+                    reject(res['data']) // 业务逻辑的错误交给业务模块处理
+                } else {
+                    resolve(res['data'])
+                }
+            })
+            .catch(err => {
+                tryConsumeErr(err)  // 请求异常交给系统注册的errorHandler处理
+            })
     })
-        .then(res => res.json())
-        .then(res => {
-            if (res.type == STATES.UNAUTHENTICATED || res.type == STATES.INTERNAL_ERR) {
-                throw new Error(res['data'])
-            } else {
-                return res['data']
-            }
-        })
-        .catch(err => {
-            tryConsumeErr(err)
-        })
 }

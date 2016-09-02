@@ -14,9 +14,8 @@ export default {
      */
     updateUserProfile(terms) {
         let user = currentUser.getCurrentUser()
-        // return `mutation { updateUserProfile(id:"${user && user['id']}",terms:"${JSON.stringify(terms)}") }`
-        return graphql(`mutation { updateUserProfile(id: "${user && user['id']}",terms:"{\"age\":28}") }`)
-
-        // return graphql(`mutation { updateUserProfile(id:"${user && user['id']}",terms:"${JSON.stringify(terms)}") }`)
+        return graphql(`mutation { 
+            updateUserProfile(id: "${user && user['id']}",terms:"${terms.replace(/\"/g,'\\"')}") 
+        }`)
     }
 }

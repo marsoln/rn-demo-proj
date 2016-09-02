@@ -34,7 +34,10 @@ export default class Button extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity style={[basicStyles.btnContainer, this.props.wrapperStyle]} onPress={this.pressEventHandler.bind(this) }>
+            <TouchableOpacity
+                style={[basicStyles.btnContainer, this.props.wrapperStyle]}
+                activeOpacity={this.props.opacity || 0.5}
+                onPress={this.pressEventHandler.bind(this) }>
                 <Text style={[basicStyles.button, this.props.buttonStyle]}>{this.props.text}</Text>
             </TouchableOpacity>
         )
