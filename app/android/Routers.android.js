@@ -1,7 +1,6 @@
 import React, {
     AppRegistry,
     AppState,
-    Alert,
     BackAndroid,
     Navigator,
     Text,
@@ -14,52 +13,12 @@ import Loading from './view/common/Loading'
 import Login from './view/user/Login'
 import Register from './view/user/Register'
 import Toast from  'react-native-toast'
+import ErrorHandlerRegister from './ErrorHandler'
 
 const EXIT_DELAY = 3000    // 双击退出客户端的相应延迟
 let _navigator, _quitStatus = false
 
-// 注册网络请求错误的handler
-apis.Util.setErrConsumeFunction(err => {
-    if (err instanceof TypeError) {
-        if (err.message == "Network request failed") {
-            //网络问题 连接不到服务器
-            Alert.alert(
-                '警告',
-                '请检查你的网络情况！', [
-                    { text: 'OK' }
-                ]
-            )
-        } else {
-            Alert.alert(
-                '警告',
-                '类型错误', [
-                    { text: 'OK' }
-                ]
-            )
-        }
-    } else if (err instanceof SyntaxError) {
-        Alert.alert(
-            '警告',
-            '语法错误', [
-                { text: 'OK' }
-            ]
-        )
-    } else if (err.type == apis.STATES.UNAUTHENTICATED) {
-        Alert.alert(
-            '警告',
-            '身份信息过期,请重新登录', [
-                { text: 'OK' }
-            ]
-        )
-    } else {
-        Alert.alert(
-            '警告',
-            '未知错误', [
-                { text: 'OK' }
-            ]
-        )
-    }
-})
+ErrorHandlerRegister()
 
 // 监听系统后退按钮
 BackAndroid.addEventListener('hardwareBackPress', () => {

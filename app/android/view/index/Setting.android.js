@@ -43,24 +43,32 @@ export default class Setting extends React.Component {
             })
     }
 
-    editProfile(key){
+    editProfile(key) {
+        let terms = {
+            age: 12
+        }
+
+        let _str = JSON.stringify(terms)
         apis.UserApi
-            .updateUserProfile()
-            .then(res=>{
-                if(res&&res['updateUserProfile']){
-                    ToastAndroid.show(`update ${key} success`,1000)
-                }else{
-                    ToastAndroid.show(`update failed`,1000)
+            .updateUserProfile(_str)
+            .then(res => {
+                if (res && res['updateUserProfile']) {
+                    ToastAndroid.show(`update ${key} success`, 1000)
+                } else {
+                    ToastAndroid.show('更新失败.', 1000)
                 }
+            })
+            .catch((e) => {
+                ToastAndroid.show('服务器爆炸了.', 500)
             })
     }
 
-    renderProfileItem(title, value,key) {
+    renderProfileItem(title, value, key) {
         return (
             <View style={styles.profileItem} key={key}>
                 <Text style={styles.itemTitle}>{title}: </Text>
-                <Text style={styles.itemValue} 
-                    onPress={ ()=>this.editProfile(key) } >{value}</Text>
+                <Text style={styles.itemValue}
+                    onPress={ () => this.editProfile(key) } >{value}</Text>
             </View>
         )
     }
@@ -78,7 +86,7 @@ export default class Setting extends React.Component {
         }
         let res = []
         for (let name in profileItemMapper) {
-            res[res.length] = this.renderProfileItem(profileItemMapper[name], this.state.currentUser[name],name)
+            res[res.length] = this.renderProfileItem(profileItemMapper[name], this.state.currentUser[name], name)
         }
         return res
     }
