@@ -1,6 +1,6 @@
 {
   "name": "rn-demo-proj",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
@@ -9,8 +9,7 @@
     "react": "15.2.1",
     "react-native": "0.31.0",
     "react-native-store": "^0.4.1",
-    "react-native-toast": "^1.0.1",
-    "socket.io-client": "^1.4.8"
+    "react-native-toast": "^1.0.1"
   },
   "devDependencies": {
     "immutable": "^3.8.1",
