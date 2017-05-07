@@ -21,14 +21,17 @@ var Dimensions = require('Dimensions');
 import _ from 'lodash';
 import api from "../../network/ApiHelper";
 import styles from "./style";
+
 var {height, width} = Dimensions.get('window');
 var Icons = require('react-native-vector-icons/Ionicons');
 var loaderHandler = require('react-native-busy-indicator/LoaderHandler');
 var BusyIndicator = require('react-native-busy-indicator');
+
 import RNFS from 'react-native-fs';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from 'react-native-navbar';
+
 var callFun;
 var _this;
 var dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1.title !== row2.title});
