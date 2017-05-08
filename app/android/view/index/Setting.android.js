@@ -1,7 +1,5 @@
 import React, {
     View,
-    BackAndroid,
-    Navigator,
     ListView,
     Image,
     Text,
@@ -9,6 +7,8 @@ import React, {
     TouchableOpacity,
     ScrollView,
 } from '../../../libs/system/react'
+
+import { NavigationActions } from 'react-navigation'
 import apis from '../../../libs/network/apis'
 import styles from '../styles/setting'
 import basicStyles from '../styles/basic'
@@ -17,6 +17,7 @@ import {
     shutDown,
 } from '../../../libs/network/socket/chatClient'
 import Button from '../components/Button'
+import { AppRouter } from '../../Routers.android'
 
 export default class Setting extends React.Component {
 
@@ -68,7 +69,7 @@ export default class Setting extends React.Component {
             <View style={styles.profileItem} key={key}>
                 <Text style={styles.itemTitle}>{title}: </Text>
                 <Text style={styles.itemValue}
-                    onPress={ () => this.editProfile(key) } >{value}</Text>
+                    onPress={() => this.editProfile(key)} >{value}</Text>
             </View>
         )
     }
@@ -97,9 +98,12 @@ export default class Setting extends React.Component {
     logout() {
         shutDown()
         apis.UserState.logout()
-        this.props.nav.immediatelyResetRouteStack([
-            { id: 'Login' }
-        ])
+        this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        }))
     }
 
     render() {
@@ -109,7 +113,7 @@ export default class Setting extends React.Component {
                 <View style={basicStyles.window}>
                     <View style={styles.header}>
                         <Image style={styles.avatar}
-                            source={{ uri: uri }}/>
+                            source={{ uri: uri }} />
                         <View style={styles.usernameContainer}>
                             <Text style={styles.nickname}>
                                 {this.state.currentUser.nickname}
@@ -120,14 +124,14 @@ export default class Setting extends React.Component {
                         </View>
                     </View>
                     <View>
-                        { this.renderProfile() }
+                        {this.renderProfile()}
                     </View>
                 </View>
 
                 <Button text='登出'
                     wrapperStyle={[basicStyles.btnDanger, styles.logoutBtn]}
-                    onPress={this.logout.bind(this) }
-                    delay={false}/>
+                    onPress={this.logout.bind(this)}
+                    delay={false} />
             </View>
         )
     }

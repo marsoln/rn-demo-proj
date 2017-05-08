@@ -6,14 +6,17 @@ import React, {
     TouchableOpacity
 } from '../../../libs/system/react'
 
+import { NavigationActions } from 'react-navigation'
 import apis from '../../../libs/network/apis'
 import styles from '../styles/loginAndRegister'
-import basicStyles, {LIGHT_GREEN} from '../styles/basic'
+import basicStyles, { LIGHT_GREEN } from '../styles/basic'
 import FadeInContainer from '../components/FadeInContainer'
-import Toast from  'react-native-toast'
+import Toast from 'react-native-toast'
 
 export default class Register extends React.Component {
-
+    static navigationOptions = {
+        title: 'Register'
+    }
     constructor(props) {
         super(props)
         this.state = {
@@ -52,13 +55,12 @@ export default class Register extends React.Component {
                 .then((res) => {
                     this.state.unsubmit = true
                     if (res.type == apis.STATES.SUCCESS) {
-                        this.props.nav.immediatelyResetRouteStack([
-                            {
-                                id: 'MainTabView',
-                                type: this.props.type == null ? 0 : this.props.type,
-                                welcome: true
-                            }
-                        ])
+                        this.props.navigation.dispatch(NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Main' })
+                            ]
+                        }))
                     } else {
                         Toast.show(res.data, 2000)
                     }
@@ -68,7 +70,12 @@ export default class Register extends React.Component {
     }
 
     gotoLogin() {
-        this.props.nav.immediatelyResetRouteStack([{ id: 'Login' }])
+        this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ]
+        }))
     }
 
     renderContent() {
@@ -84,7 +91,7 @@ export default class Register extends React.Component {
                                     style={basicStyles.lineInput}
                                     placeholder="用户名"
                                     underlineColorAndroid="transparent"
-                                    onChangeText={(text) => this.setState({ username: text }) }/>
+                                    onChangeText={(text) => this.setState({ username: text })} />
                             </View>
                             <View style={basicStyles.lineInputWrapper}>
                                 <TextInput
@@ -93,7 +100,7 @@ export default class Register extends React.Component {
                                     placeholder="密码"
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={true}
-                                    onChangeText={(text) => this.setState({ password: text }) } />
+                                    onChangeText={(text) => this.setState({ password: text })} />
                             </View>
                             <View style={basicStyles.lineInputWrapper}>
                                 <TextInput
@@ -102,17 +109,17 @@ export default class Register extends React.Component {
                                     placeholder="确认密码"
                                     underlineColorAndroid="transparent"
                                     secureTextEntry={true}
-                                    onChangeText={(text) => this.setState({ confirmPassword: text }) } />
+                                    onChangeText={(text) => this.setState({ confirmPassword: text })} />
                             </View>
                         </View>
                         <View style={[basicStyles.link, basicStyles.right]}>
                             <Text style={styles.right}
-                                onPress={this.gotoLogin.bind(this) }>已经有账号</Text>
+                                onPress={this.gotoLogin.bind(this)}>已经有账号</Text>
                         </View>
                     </View>
                     <View>
                         <TouchableOpacity style={[basicStyles.btnContainer, styles.submit]}
-                            onPress={this.registerSubmit.bind(this) }>
+                            onPress={this.registerSubmit.bind(this)}>
                             <Text style={basicStyles.button}>注册</Text>
                         </TouchableOpacity>
                     </View>
@@ -122,6 +129,6 @@ export default class Register extends React.Component {
     }
 
     render() {
-        return (<FadeInContainer renderContent={ this.renderContent() }></FadeInContainer>)
+        return (<FadeInContainer renderContent={this.renderContent()}></FadeInContainer>)
     }
 }

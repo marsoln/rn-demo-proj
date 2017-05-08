@@ -1,7 +1,5 @@
 import React, {
     View,
-    BackAndroid,
-    Navigator,
     Text,
     ListView,
     Image,
@@ -19,7 +17,6 @@ export default class Main extends React.Component {
 
     constructor(props) {
         super(props)
-        const nav = this.props.nav
         this.state = {
             dataList: new ListView.DataSource({
                 rowHasChanged: (r1, r2) => r1 !== r2,

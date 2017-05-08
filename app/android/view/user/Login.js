@@ -4,15 +4,18 @@ import React, {
     TextInput,
     TouchableOpacity,
 } from '../../../libs/system/react'
-
+import { NavigationActions } from 'react-navigation'
 import apis from '../../../libs/network/apis'
 import styles from '../styles/loginAndRegister'
 import basicStyles from '../styles/basic'
 import FadeInContainer from '../components/FadeInContainer'
-import Toast from  'react-native-toast'
+import Toast from 'react-native-toast'
 import DB from 'react-native-store'
 
 export default class Login extends React.Component {
+    static navigationOptions = {
+        title: 'Login'
+    }
 
     constructor(props) {
         super(props)
@@ -35,7 +38,12 @@ export default class Login extends React.Component {
     }
 
     gotoRegister() {
-        this.props.nav.immediatelyResetRouteStack([{ id: 'Register' }])
+        this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Register' })
+            ]
+        }))
     }
 
     validate() {
@@ -58,12 +66,12 @@ export default class Login extends React.Component {
                 .then((res) => {
                     this.state.unsubmit = true
                     if (res.type == apis.STATES.SUCCESS) {
-                        this.props.nav.immediatelyResetRouteStack([
-                            {
-                                id: 'MainTabView',
-                                type: this.props.type == null ? 0 : this.props.type
-                            }
-                        ])
+                        this.props.navigation.dispatch(NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Main' })
+                            ]
+                        }))
                     } else {
                         Toast.show(res.data, 'short')
                     }
@@ -85,7 +93,7 @@ export default class Login extends React.Component {
                                     placeholder="用户名"
                                     value={this.state.username}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={(text) => this.setState({ username: text }) }/>
+                                    onChangeText={(text) => this.setState({ username: text })} />
                             </View>
                             <View style={basicStyles.lineInputWrapper}>
                                 <TextInput
@@ -94,18 +102,18 @@ export default class Login extends React.Component {
                                     secureTextEntry={true}
                                     defaultValue={this.state.password}
                                     underlineColorAndroid="transparent"
-                                    onChangeText={(text) => this.setState({ password: text }) } />
+                                    onChangeText={(text) => this.setState({ password: text })} />
                             </View>
                         </View>
                         <View style={[basicStyles.link, basicStyles.right]}>
                             <Text style={styles.right}
-                                onPress={this.gotoRegister.bind(this) }>还没有注册?</Text>
+                                onPress={this.gotoRegister.bind(this)}>还没有注册?</Text>
                         </View>
                     </View>
                     <View>
                         <TouchableOpacity
                             style={[basicStyles.btnContainer, styles.submit]}
-                            onPress={this.loginSubmit.bind(this) }>
+                            onPress={this.loginSubmit.bind(this)}>
                             <Text style={basicStyles.button}>登录</Text>
                         </TouchableOpacity>
                     </View>
@@ -115,6 +123,6 @@ export default class Login extends React.Component {
     }
 
     render() {
-        return (<FadeInContainer renderContent={ this.renderContent() }></FadeInContainer>)
+        return (<FadeInContainer renderContent={this.renderContent()}></FadeInContainer>)
     }
 }
