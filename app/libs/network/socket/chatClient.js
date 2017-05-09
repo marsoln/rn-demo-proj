@@ -1,4 +1,4 @@
-import io from './socket.io'
+import io from 'socket.io-client'
 import { SERVER } from '../utils/http'
 import currentUser from '../utils/currentUser'
 

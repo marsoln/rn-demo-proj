@@ -7,9 +7,13 @@ import React, {
     NetInfo,
     StatusBar,
 } from '../../../libs/system/react'
+import { NavigationActions } from 'react-navigation'
 
 import apis from '../../../libs/network/apis'
-import {WINDOW_WIDTH, WINDOW_HEIGHT} from '../styles/basic'
+import {
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT
+} from '../styles/basic'
 
 export default class Loading extends React.Component {
 
@@ -50,21 +54,26 @@ export default class Loading extends React.Component {
                         .UserState
                         .checkLoginState()
                         .then((resData) => {
-                            debugger
                             if (resData.type == 1) {
-                                //正常登录
+                                // 正常登录
                                 this.naviTo(() => {
-                                    this.props.nav.immediatelyResetRouteStack([
-                                        { id: 'MainTabView', type: this.props.type == null ? 0 : this.props.type }
-                                    ])
+                                    this.props.navigation.dispatch(NavigationActions.reset({
+                                        index: 0,
+                                        actions: [
+                                            NavigationActions.navigate({ routeName: 'Main' })
+                                        ]
+                                    }))
                                 })
                             }
                             else {
-                                //账号未登录
+                                // 账号未登录
                                 this.naviTo(() => {
-                                    this.props.nav.immediatelyResetRouteStack([
-                                        { id: 'Login' }
-                                    ])
+                                    this.props.navigation.dispatch(NavigationActions.reset({
+                                        index: 0,
+                                        actions: [
+                                            NavigationActions.navigate({ routeName: 'Login' })
+                                        ]
+                                    }))
                                 })
                             }
                         })
@@ -82,17 +91,16 @@ export default class Loading extends React.Component {
     render() {
         return (
             <View>
-                <StatusBar hidden ={true} />
+                <StatusBar hidden={true} />
                 <Animated.Image
                     resizeMode="cover"
-                    source={ Math.random() > 0.5 ? require('../../../assets/images/loading.jpg') : require('../../../assets/images/loading1.png') }
+                    source={Math.random() > 0.5 ? require('../../../assets/images/loading.jpg') : require('../../../assets/images/loading1.png')}
                     style={{
-                        flex: 1,
                         opacity: this.state.fadeAnim,
                         width: WINDOW_WIDTH,
                         height: WINDOW_HEIGHT,
                     }}
-                    />
+                />
             </View>
         )
     }

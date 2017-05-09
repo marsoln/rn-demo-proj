@@ -1,7 +1,5 @@
 import React, {
     View,
-    BackAndroid,
-    Navigator,
     Text,
     ListView,
     Image,
