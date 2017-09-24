@@ -1,12 +1,6 @@
 {
   "env": {
-    "browser": true,
-    "node": true,
-    "es6": true,
-    "jquery": true
-  },
-  "globals": {
-    "angular": true
+    "es6": true
   },
   "ecmaFeatures": {
     "arrowFunctions": true,
