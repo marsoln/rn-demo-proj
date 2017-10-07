@@ -2,20 +2,23 @@
   "env": {
     "es6": true
   },
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "destructuring": true,
-    "classes": true,
-    "defaultParams": true,
-    "blockBindings": true,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "restParams": true,
-    "spread": true,
-    "forOf": true,
-    "templateStrings": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "destructuring": true,
+      "classes": true,
+      "defaultParams": true,
+      "blockBindings": true,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "restParams": true,
+      "spread": true,
+      "forOf": true,
+      "templateStrings": true,
+      "jsx": true
+    }
   },
   "rules": {
     "accessor-pairs": 2,

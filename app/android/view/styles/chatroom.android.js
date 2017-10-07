@@ -18,6 +18,7 @@ import {
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 } from './basic'
+
 let listHeight = WINDOW_HEIGHT - 48 - 24 - 70
 
 export default StyleSheet.create({
