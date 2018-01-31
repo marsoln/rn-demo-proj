@@ -1,6 +1,4 @@
-# React-native 实现的简单聊天App
-
-# An react-native android app
+# A react-native android app
 
 ## prepare to start
 
@@ -9,7 +7,7 @@
 - connect your [mobile device](http://reactnative.cn/docs/0.44/running-on-device-android.html#content) or [emulator](http://reactnative.cn/docs/0.44/getting-started.html#genymotion)
 - run compile cmd `react-native run-android`
 
-## established the server
+## establish service
 
 > this step will need another repo, check it here `https://github.com/marsoln/lets-chat`
 
@@ -18,8 +16,9 @@
 - install dependencies `npm install`
 - start the service `npm start`
 - change your server connection config in this project at the `./app/libs/utils/http.js` file
+
 ```javascript
-const SERVER = 'http://172.26.9.137' // change the ip address of your server
+const SERVER = 'http://??.??.??.??' // change the ip address of your server
 ```
 
 ## start this demo application
@@ -28,4 +27,4 @@ const SERVER = 'http://172.26.9.137' // change the ip address of your server
 
 ## enjoy your time
 
-Feel free to do whatever you wanna do.
+Feel free to do whatever you wanna do
